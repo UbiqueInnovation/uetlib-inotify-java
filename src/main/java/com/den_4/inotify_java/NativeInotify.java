@@ -21,8 +21,17 @@
  */
 package com.den_4.inotify_java;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import com.den_4.inotify_java.exceptions.InotifyException;
 import com.den_4.inotify_java.exceptions.InsufficientKernelMemoryException;
@@ -40,339 +49,388 @@ import com.den_4.inotify_java.exceptions.UserWatchLimitException;
  */
 public abstract class NativeInotify {
 
-    /** Watch descriptor associated with this inotify instance. */
-    protected int fileDescriptor;
+	/** Watch descriptor associated with this inotify instance. */
+	protected int fileDescriptor;
 
-    /** Flag used to indicate an active file descriptor. */
-    private boolean fdActive = false;
+	/** Flag used to indicate an active file descriptor. */
+	private boolean fdActive = false;
 
-    /** Provides thread-safety for {@link #fdActive} */
-    private Semaphore activeSem;
+	/** Provides thread-safety for {@link #fdActive} */
+	private Semaphore activeSem;
 
-    /* Flag indicating whether the native library is loaded. */
-    private static boolean nativeLibLoaded;
-    /* Guarantee library loading is thread-safe. */
-    private static ReentrantLock lock = new ReentrantLock();
+	/* Flag indicating whether the native library is loaded. */
+	private static boolean nativeLibLoaded;
+	/* Guarantee library loading is thread-safe. */
+	private static ReentrantLock lock = new ReentrantLock();
 
-    /**
-     * Contains the file descriptors for the read/write ends of a pipe, used for
-     * IPC purposes.
-     */
-    private int[] pipes;
+	private static final String LIB = "/native/";
+	private static final String INOTIFY_32 = "libinotify-java-32.so";
+	private static final String INOTIFY_64 = "libinotify-java-64.so";
 
-    /**
-     * Constructs a new Inotify instance.
-     * 
-     * @throws InotifyException Thrown if the native inotify object could not be
-     * constructed. The cause of the exception will be provided.
-     */
-    public NativeInotify() throws InotifyException {
-        try {
-            if (!isLibraryLoaded())
-                loadLibrary(null);
-            fileDescriptor = init();
-        } catch (UnsatisfiedLinkError e) {
-            InotifyException ie = new InotifyException("unsatisfied link", e);
-            throw ie;
-        } catch (InsufficientKernelMemoryException e) {
-            InotifyException ie = new InotifyException(
-                    "kernel memory exception", e);
-            throw ie;
-        } catch (SystemLimitException e) {
-            InotifyException ie = new InotifyException("system limit reached",
-                    e);
-            throw ie;
-        } catch (UserInstanceLimitException e) {
-            InotifyException ie = new InotifyException("user limit reached", e);
-            throw ie;
-        }
-        fdActive = true;
-        activeSem = new Semaphore(1, true);
-    }
+	/**
+	 * Contains the file descriptors for the read/write ends of a pipe, used for IPC
+	 * purposes.
+	 */
+	private int[] pipes;
 
-    /**
-     * Returns {@code true} if the native library has been loaded, {@code false}
-     * if not.
-     * <p>
-     * This method is {@link com.den_4.inotify_java.ThreadSafe thread-safe}.
-     * </p>
-     * 
-     * @return {@code true} if the native library has been loaded, {@code false}
-     * if not
-     */
-    @ThreadSafe
-    public static boolean isLibraryLoaded() {
-        lock.lock();
-        try {
-            return nativeLibLoaded;
-        } finally {
-            lock.unlock();
-        }
-    }
+	/**
+	 * Constructs a new Inotify instance.
+	 * 
+	 * @throws InotifyException Thrown if the native inotify object could not be
+	 *                          constructed. The cause of the exception will be
+	 *                          provided.
+	 */
+	public NativeInotify() throws InotifyException {
+		try {
+			if (!isLibraryLoaded())
+				loadLibrary(null);
+			fileDescriptor = init();
+		} catch (UnsatisfiedLinkError e) {
+			InotifyException ie = new InotifyException("unsatisfied link", e);
+			throw ie;
+		} catch (InsufficientKernelMemoryException e) {
+			InotifyException ie = new InotifyException("kernel memory exception", e);
+			throw ie;
+		} catch (SystemLimitException e) {
+			InotifyException ie = new InotifyException("system limit reached", e);
+			throw ie;
+		} catch (UserInstanceLimitException e) {
+			InotifyException ie = new InotifyException("user limit reached", e);
+			throw ie;
+		}
+		fdActive = true;
+		activeSem = new Semaphore(1, true);
+	}
 
-    /**
-     * Loads the native library specified by the filename. Supplying a {@code
-     * filename} value of {@code null} will result in the library being loaded
-     * using the library paths provided to the virtual machine.
-     * <p>
-     * This method is {@link com.den_4.inotify_java.ThreadSafe thread-safe}.
-     * </p>
-     * 
-     * @param filename The file to load
-     * @throws SecurityException Thrown if a security manager is preventing
-     * loading of the dyanmic library
-     * @exception UnsatisfiedLinkError Thrown if the library does not exist
-     * @see java.lang.SecurityManager#checkLink(String)
-     */
-    @ThreadSafe
-    public static void loadLibrary(String filename) throws UnsatisfiedLinkError {
-        lock.lock();
-        try {
-            if (filename == null)
-                System.loadLibrary("inotify-java"); //$NON-NLS-1$
-            else
-                System.load(filename);
-            nativeLibLoaded = true;
-        } finally {
-            lock.unlock();
-        }
-    }
+	/**
+	 * Returns {@code true} if the native library has been loaded, {@code false} if
+	 * not.
+	 * <p>
+	 * This method is {@link com.den_4.inotify_java.ThreadSafe thread-safe}.
+	 * </p>
+	 * 
+	 * @return {@code true} if the native library has been loaded, {@code false} if
+	 *         not
+	 */
+	@ThreadSafe
+	public static boolean isLibraryLoaded() {
+		lock.lock();
+		try {
+			return nativeLibLoaded;
+		} finally {
+			lock.unlock();
+		}
+	}
 
-    /**
-     * Invokes {@link #destroy()}.
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        destroy();
-        super.finalize();
-    }
+	/**
+	 * Loads the native library specified by the filename. Supplying a
+	 * {@code filename} value of {@code null} will result in the library being
+	 * loaded using the library paths provided to the virtual machine.
+	 * <p>
+	 * This method is {@link com.den_4.inotify_java.ThreadSafe thread-safe}.
+	 * </p>
+	 * 
+	 * @param filename The file to load
+	 * @throws SecurityException Thrown if a security manager is preventing loading
+	 *                           of the dyanmic library
+	 * @exception UnsatisfiedLinkError Thrown if the library does not exist
+	 * @see java.lang.SecurityManager#checkLink(String)
+	 */
+	@ThreadSafe
+	public static void loadLibrary(String filename) throws InotifyException {
+		lock.lock();
+		try {
+			if (filename == null) {
+				if (System.getProperty("os.arch").indexOf("64") != -1) {
+					filename = "libinotify-java-noglobal";
+				} else {
+					filename = "libinotify-java-noglobal";
+				}
+				try {
+					loadFromJar(filename); // $NON-NLS-1$
+				} catch (Exception e) {
+					throw new InotifyException(e.getMessage());
+				}
+			} else {
+				System.loadLibrary(filename);
+			}
+			nativeLibLoaded = true;
+		} finally {
+			lock.unlock();
+		}
+	}
 
-    /**
-     * Returns {@code true} if this Inotify instance is active, {@code false} if
-     * it has been destroyed.
-     * <p>
-     * This method is thread-safe and guarantees the returned value is accurate
-     * at the time of invocation.
-     * </p>
-     * 
-     * @return {@code true} if this Inotify instance is active, {@code false} if
-     * it has been destroyed
-     * @see #isInactive()
-     * @see #destroy()
-     */
-    @ThreadSafe
-    public final boolean isActive() {
-        activeSem.acquireUninterruptibly();
-        boolean active = fdActive;
-        activeSem.release();
-        return active;
-    }
+	/**
+	 * When packaged into JAR extracts DLLs, places these into
+	 */
+	private static void loadFromJar(String fileName) throws Exception {
+		// we need to put both DLLs to temp dir
+		String path = "inotify_" + new Date().getTime();
+		loadLib(path, fileName);
+	}
 
-    /**
-     * Returns {@code true} if this Inotify instance has been destroyed, {@code
-     * false} if it is active.
-     * <p>
-     * This method is thread-safe and guarantees the returned value is accurate
-     * at the time of invocation.
-     * </p>
-     * 
-     * @return {@code true} if this Inotify instance has been destroyed, {@code
-     * false} if it is active
-     * @see #isActive()
-     * @see #destroy()
-     */
-    @ThreadSafe
-    public final boolean isInactive() {
-        activeSem.acquireUninterruptibly();
-        boolean inactive = !fdActive;
-        activeSem.release();
-        return inactive;
-    }
+	/**
+	 * Puts library to temp dir and loads to memory
+	 */
+	private static void loadLib(String path, String name) throws Exception {
+		name = name + ".so";
+		// have to use a stream
+		InputStream in = NativeInotify.class.getResourceAsStream(LIB + name);
+		// always write to different location
+		File fileOut = new File(System.getProperty("java.io.tmpdir") + "/" + path + LIB + name);
+		OutputStream out = FileUtils.openOutputStream(fileOut);
+		IOUtils.copy(in, out);
+		in.close();
+		out.close();
+		System.load(fileOut.toString());
+	}
 
-    /**
-     * Returns the descriptor associated with this Inotify instance.
-     * 
-     * @return int
-     */
-    public final int getFileDescriptor() {
-        return fileDescriptor;
-    }
+	/**
+	 * Invokes {@link #destroy()}.
+	 */
+	@Override
+	protected void finalize() throws Throwable {
+		destroy();
+	}
 
-    /**
-     * Destroys the underlying native instance, thus freeing allocated native
-     * resources. This method is a no-op if the
-     * {@link com.den_4.inotify_java.NativeInotify NativeInotify} object is not
-     * active.
-     * 
-     * @see #isActive()
-     * @see #isInactive()
-     */
-    public void destroy() {
-        activeSem.acquireUninterruptibly();
-        try {
-            if (fdActive) {
-                close(fileDescriptor);
-                fdActive = false;
-            }
-        } finally {
-            activeSem.release();
-        }
-    }
+	/**
+	 * Returns {@code true} if this Inotify instance is active, {@code false} if it
+	 * has been destroyed.
+	 * <p>
+	 * This method is thread-safe and guarantees the returned value is accurate at
+	 * the time of invocation.
+	 * </p>
+	 * 
+	 * @return {@code true} if this Inotify instance is active, {@code false} if it
+	 *         has been destroyed
+	 * @see #isInactive()
+	 * @see #destroy()
+	 */
+	@ThreadSafe
+	public final boolean isActive() {
+		activeSem.acquireUninterruptibly();
+		boolean active = fdActive;
+		activeSem.release();
+		return active;
+	}
 
-    /**
-     * Adds a new watch, or modifies an existing watch for the file or directory
-     * whose location is specified by the {@code path} argument. The events to
-     * be monitored are specified by the bit-mask, {@code constantMask}.
-     * 
-     * @param path Path to watch
-     * @param constantMask Mask of events
-     * @return int The unique watch descriptor associated with the specified
-     * {@code path} argument. The watch descriptor is later returned from
-     * received events, indicating file system events.
-     * @throws InotifyException Thrown if the native inotify object could not be
-     * constructed. The cause of the exception will be provided.
-     * @see #removeWatch(int)
-     */
-    int addWatch(String path, int constantMask) throws InotifyException {
-        if (isInactive())
-            throw new UnsupportedOperationException("not active");
-        if (path == null)
-            throw new IllegalArgumentException("path cannot be null");
+	/**
+	 * Returns {@code true} if this Inotify instance has been destroyed,
+	 * {@code false} if it is active.
+	 * <p>
+	 * This method is thread-safe and guarantees the returned value is accurate at
+	 * the time of invocation.
+	 * </p>
+	 * 
+	 * @return {@code true} if this Inotify instance has been destroyed,
+	 *         {@code false} if it is active
+	 * @see #isActive()
+	 * @see #destroy()
+	 */
+	@ThreadSafe
+	public final boolean isInactive() {
+		activeSem.acquireUninterruptibly();
+		boolean inactive = !fdActive;
+		activeSem.release();
+		return inactive;
+	}
 
-        try {
-            int wd = add_watch(fileDescriptor, path, constantMask);
-            return wd;
-        } catch (UserWatchLimitException e) {
-            InotifyException ie = new InotifyException("user limit reached", e);
-            throw ie;
-        }
-    }
+	/**
+	 * Returns the descriptor associated with this Inotify instance.
+	 * 
+	 * @return int
+	 */
+	public final int getFileDescriptor() {
+		return fileDescriptor;
+	}
 
-    /**
-     * Removes an item from the watch list by the specified watch descriptor
-     * {@code wd}.
-     * 
-     * @param wd Unique integer descriptor returned by the {@link #addWatch}
-     * method.
-     * @return {@code true} if the watch was successfully removed, {@code false}
-     * @throws InvalidWatchDescriptorException Thrown when the watch descriptor
-     * is not valid for this {@code Inotify} instance
-     * @see #addWatch(String, int)
-     */
-    boolean removeWatch(int wd) throws InvalidWatchDescriptorException {
-        if (isInactive())
-            throw new UnsupportedOperationException("not active");
+	/**
+	 * Destroys the underlying native instance, thus freeing allocated native
+	 * resources. This method is a no-op if the
+	 * {@link com.den_4.inotify_java.NativeInotify NativeInotify} object is not
+	 * active.
+	 * 
+	 * @see #isActive()
+	 * @see #isInactive()
+	 */
+	public void destroy() {
+		activeSem.acquireUninterruptibly();
+		try {
+			if (fdActive) {
+				close(fileDescriptor);
+				fdActive = false;
+			}
+		} finally {
+			activeSem.release();
+		}
+		// remove tmp files
+		File dir = new File("/tmp/");
+		FileFilter filter = new WildcardFileFilter("inotify_*");
+		File[] dirs = dir.listFiles(filter);
+		for (File tmpDir : dirs) {
+			try {
+				FileUtils.deleteDirectory(tmpDir);
+			} catch (Exception e) {
+				// dont do anything, its just the tmp folder
+			}
+		}
+	}
 
-        if (rm_watch(fileDescriptor, wd) == 0)
-            return true;
-        return false;
-    }
+	/**
+	 * Adds a new watch, or modifies an existing watch for the file or directory
+	 * whose location is specified by the {@code path} argument. The events to be
+	 * monitored are specified by the bit-mask, {@code constantMask}.
+	 * 
+	 * @param path         Path to watch
+	 * @param constantMask Mask of events
+	 * @return int The unique watch descriptor associated with the specified
+	 *         {@code path} argument. The watch descriptor is later returned from
+	 *         received events, indicating file system events.
+	 * @throws InotifyException Thrown if the native inotify object could not be
+	 *                          constructed. The cause of the exception will be
+	 *                          provided.
+	 * @see #removeWatch(int)
+	 */
+	int addWatch(String path, int constantMask) throws InotifyException {
+		if (isInactive())
+			throw new UnsupportedOperationException("not active");
+		if (path == null)
+			throw new IllegalArgumentException("path cannot be null");
 
-    /**
-     * Services the native event queue until this this object is destroyed.
-     * 
-     * @see #destroy()
-     */
-    void read() {
-        if (isInactive())
-            return;
-        read(fileDescriptor);
-    }
+		try {
+			int wd = add_watch(fileDescriptor, path, constantMask);
+			return wd;
+		} catch (UserWatchLimitException e) {
+			InotifyException ie = new InotifyException("user limit reached", e);
+			throw ie;
+		}
+	}
 
-    /**
-     * Receives an Inotify event from the native interface.
-     * 
-     * @param e InotifyEvent from the native interface
-     */
-    abstract void eventHandler(InotifyEvent e);
+	/**
+	 * Removes an item from the watch list by the specified watch descriptor
+	 * {@code wd}.
+	 * 
+	 * @param wd Unique integer descriptor returned by the {@link #addWatch} method.
+	 * @return {@code true} if the watch was successfully removed, {@code false}
+	 * @throws InvalidWatchDescriptorException Thrown when the watch descriptor is
+	 *                                         not valid for this {@code Inotify}
+	 *                                         instance
+	 * @see #addWatch(String, int)
+	 */
+	boolean removeWatch(int wd) throws InvalidWatchDescriptorException {
+		if (isInactive())
+			throw new UnsupportedOperationException("not active");
 
-    /**
-     * Invokes the inotify_init native routine, which in turn initializes a
-     * native instance.
-     * 
-     * @return int File descriptor associated with a new inotify event queue.
-     * @throws InsufficientKernelMemoryException Checked exception thrown to
-     * indicate an insufficient amount of kernel memory is available for a new
-     * native inotify instance.
-     * @throws SystemLimitException Checked exception thrown to indicate the
-     * system limit of total file descriptors has been reached.
-     * @throws UserInstanceLimitException Checked exception thrown to indicate
-     * the maximum number of inotify instances has been reached.
-     */
-    private native int init() throws InsufficientKernelMemoryException,
-            SystemLimitException, UserInstanceLimitException;
+		if (rm_watch(fileDescriptor, wd) == 0)
+			return true;
+		return false;
+	}
 
-    /**
-     * Destroys the underlying inotify instance by closing the file descriptor.
-     */
-    private native void close(int fd);
+	/**
+	 * Services the native event queue until this this object is destroyed.
+	 * 
+	 * @see #destroy()
+	 */
+	void read() {
+		if (isInactive())
+			return;
+		read(fileDescriptor);
+	}
 
-    /**
-     * Invokes the inotify_add_watch native routine, adding to or modifying an
-     * existing watch.
-     * 
-     * @param fd The fd argument is a file descriptor referring to the inotify
-     * instance whose watch list is to be modified.
-     * @param path Path to be watched.
-     * @param mask Bit-mask argument
-     * @return int Returns the unique watch descriptor associated with the path
-     * for this Inotify instance. If path was not previously being watched by
-     * this Inotify instance, then the watch descriptor is newly allocated. If
-     * path was already being watched, then the descriptor for the existing
-     * watch is returned.
-     * @throws UserWatchLimitException Checked exception thrown to indicate the
-     * maximum number of inotify watches has been reached.
-     */
-    private native int add_watch(int fd, String path, int mask)
-            throws UserWatchLimitException;
+	/**
+	 * Receives an Inotify event from the native interface.
+	 * 
+	 * @param e InotifyEvent from the native interface
+	 */
+	abstract void eventHandler(InotifyEvent e);
 
-    /**
-     * @param fd The fd argument is a file descriptor referring to the Inotify
-     * instance whose watch list is to be modified.
-     * @param wd The wd argument is the watch descriptor to be removed.
-     * @return int Returns zero on success or -1 if an error occurred.
-     */
-    private native int rm_watch(int fd, int wd);
+	/**
+	 * Invokes the inotify_init native routine, which in turn initializes a native
+	 * instance.
+	 * 
+	 * @return int File descriptor associated with a new inotify event queue.
+	 * @throws InsufficientKernelMemoryException Checked exception thrown to
+	 *                                           indicate an insufficient amount of
+	 *                                           kernel memory is available for a
+	 *                                           new native inotify instance.
+	 * @throws SystemLimitException              Checked exception thrown to
+	 *                                           indicate the system limit of total
+	 *                                           file descriptors has been reached.
+	 * @throws UserInstanceLimitException        Checked exception thrown to
+	 *                                           indicate the maximum number of
+	 *                                           inotify instances has been reached.
+	 */
+	private native int init()
+			throws InsufficientKernelMemoryException, SystemLimitException, UserInstanceLimitException;
 
-    /**
-     * Reads the available events from the inotify event queue.
-     * 
-     * @param fd File descriptor referring to the inotify instance whose queue
-     * is to be read.
-     */
-    private native void read(int fd);
+	/**
+	 * Destroys the underlying inotify instance by closing the file descriptor.
+	 */
+	private native void close(int fd);
 
-    /**
-     * Sets the read and write file descriptors of the IPC pipe associated with
-     * this {@link com.den_4.inotify_java.NativeInotify NativeInotify} object.
-     * 
-     * @param readEnd File descriptor of pipe read end
-     * @param writeEnd File descriptor of pipe write end
-     */
-    @SuppressWarnings("unused")
-    private void setPipes(int readEnd, int writeEnd) {
-        pipes = new int[2];
-        pipes[0] = readEnd;
-        pipes[1] = writeEnd;
-    }
+	/**
+	 * Invokes the inotify_add_watch native routine, adding to or modifying an
+	 * existing watch.
+	 * 
+	 * @param fd   The fd argument is a file descriptor referring to the inotify
+	 *             instance whose watch list is to be modified.
+	 * @param path Path to be watched.
+	 * @param mask Bit-mask argument
+	 * @return int Returns the unique watch descriptor associated with the path for
+	 *         this Inotify instance. If path was not previously being watched by
+	 *         this Inotify instance, then the watch descriptor is newly allocated.
+	 *         If path was already being watched, then the descriptor for the
+	 *         existing watch is returned.
+	 * @throws UserWatchLimitException Checked exception thrown to indicate the
+	 *                                 maximum number of inotify watches has been
+	 *                                 reached.
+	 */
+	private native int add_watch(int fd, String path, int mask) throws UserWatchLimitException;
 
-    /**
-     * Gets the file descriptor of the read end of the IPC pipe.
-     * 
-     * @return IPC pipe read end file descriptor
-     */
-    @SuppressWarnings("unused")
-    private int getPipeRead() {
-        return pipes[0];
-    }
+	/**
+	 * @param fd The fd argument is a file descriptor referring to the Inotify
+	 *           instance whose watch list is to be modified.
+	 * @param wd The wd argument is the watch descriptor to be removed.
+	 * @return int Returns zero on success or -1 if an error occurred.
+	 */
+	private native int rm_watch(int fd, int wd);
 
-    /**
-     * Gets the file descriptor of the write end of the IPC pipe.
-     * 
-     * @return IPC pipe write end file descriptor
-     */
-    @SuppressWarnings("unused")
-    private int getPipeWrite() {
-        return pipes[1];
-    }
+	/**
+	 * Reads the available events from the inotify event queue.
+	 * 
+	 * @param fd File descriptor referring to the inotify instance whose queue is to
+	 *           be read.
+	 */
+	private native void read(int fd);
+
+	/**
+	 * Sets the read and write file descriptors of the IPC pipe associated with this
+	 * {@link com.den_4.inotify_java.NativeInotify NativeInotify} object.
+	 * 
+	 * @param readEnd  File descriptor of pipe read end
+	 * @param writeEnd File descriptor of pipe write end
+	 */
+	public void setPipes(int readEnd, int writeEnd) {
+		pipes = new int[2];
+		pipes[0] = readEnd;
+		pipes[1] = writeEnd;
+	}
+
+	/**
+	 * Gets the file descriptor of the read end of the IPC pipe.
+	 * 
+	 * @return IPC pipe read end file descriptor
+	 */
+	public int getPipeRead() {
+		return pipes[0];
+	}
+
+	/**
+	 * Gets the file descriptor of the write end of the IPC pipe.
+	 * 
+	 * @return IPC pipe write end file descriptor
+	 */
+	public int getPipeWrite() {
+		return pipes[1];
+	}
 }
