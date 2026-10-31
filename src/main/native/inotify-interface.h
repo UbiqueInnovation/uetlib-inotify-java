@@ -24,7 +24,6 @@
 
 #include <iostream>
 
-#include <linux/jni_md.h>
 #include <jni.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -33,7 +32,7 @@
 #include <sys/ioctl.h>
 #include <sys/errno.h>
 
-#include "headers/jni-header.h"
+#include "com_den_4_inotify_java_NativeInotify.h"
 #include "typedefs.h"
 
 #ifdef ENABLE_DEBUGGING
@@ -150,7 +149,7 @@ jmethodID inotify_event_init_III_Ljava_lang_String;
  *     The VM calls JNI_OnLoad when the native library is loaded.
  *
  * Returns:
- *     The constant: JNI_VERSION_1_6 - specified by jni.h
+ *     The constant: JNI_VERSION_9 - specified by jni.h
  */
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *, void *);
 

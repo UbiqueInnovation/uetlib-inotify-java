@@ -57,7 +57,7 @@ public abstract class ConcurrentReader extends NativeInotify implements Uncaught
         }, "ConcurrentReader:" + fileDescriptor); //$NON-NLS-1$
 
         // Thread lives only to serve user threads; thread can be daemonized.
-        reader.setDaemon(true);
+        reader.setDaemon(false);
         reader.setUncaughtExceptionHandler(this);
         reader.start();
     }

@@ -224,6 +224,16 @@ public enum Event {
     public static boolean isSet(Event e, int mask) {
         if (e.value == (e.value & mask))
             return true;
+        if (e.value == Close.value)
+            if (Close_No_Write.value == (Close_No_Write.value & mask))
+                return true;
+            else if (Close_Write.value == (Close_Write.value & mask))
+                return true;
+        if (e.value == Moved.value)
+            if (Moved_From.value == (Moved_From.value & mask))
+                return true;
+            else if (Moved_To.value == (Moved_To.value & mask))
+                return true;
         return false;
     }
 
