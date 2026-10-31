@@ -1,43 +1,36 @@
 /**
- * Copyright © 2009 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+ * Copyright © 2009 Nick Bargnesi <nick@den-4.com>. All rights reserved.
  *
- * inotify-java is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * <p>inotify-java is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version.
  *
- * inotify-java is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>inotify-java is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>You should have received a copy of the GNU Lesser General Public License along with
+ * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * File: InotifyEvent.java
- * Project: inotify-java
- * Package: ch.ubique.uetlib.inotify
- * Author: Nick Bargnesi
+ * <p>File: InotifyEvent.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
+ * Bargnesi
  */
-
 package ch.ubique.uetlib.inotify;
-
-import java.util.EventObject;
 
 import ch.ubique.uetlib.inotify.enums.Event;
 import ch.ubique.uetlib.inotify.enums.EventModifier;
+import java.util.EventObject;
 
 /**
- * InotifyEvent is an event carrying data relevant to a watched file system.
- * Events are associated with a specific instance of the
- * {@link ch.ubique.uetlib.inotify.NativeInotify} class.
- * 
+ * InotifyEvent is an event carrying data relevant to a watched file system. Events are associated
+ * with a specific instance of the {@link ch.ubique.uetlib.inotify.NativeInotify} class.
+ *
  * @author Nick Bargnesi
  */
 public class InotifyEvent extends EventObject {
 
     /** Contains the mask information associated with this event. */
-    private int mask;
+    private final int mask;
 
     /** Synchronization cookie associating two event instances. */
     private int cookie;
@@ -46,60 +39,57 @@ public class InotifyEvent extends EventObject {
     private String name;
 
     /**
-     * Contains a contextual name optionally provided by the
-     * {@link ch.ubique.uetlib.inotify.NativeInotify NativeInotify} derived type.
+     * Contains a contextual name optionally provided by the {@link
+     * ch.ubique.uetlib.inotify.NativeInotify NativeInotify} derived type.
      */
     private String contextualName;
 
     /**
-     * Creates a new InotifyEvent from the specific watch descriptor, mask,
-     * cookie, and name value.
-     * 
-     * @param watchDescriptor The watch descriptor associated to the path on
-     * which this event occurred
+     * Creates a new InotifyEvent from the specific watch descriptor, mask, cookie, and name value.
+     *
+     * @param watchDescriptor The watch descriptor associated to the path on which this event
+     *     occurred
      * @param mask The mask responsible for this event
      */
-    public InotifyEvent(int watchDescriptor, int mask) {
-        super(Integer.valueOf(watchDescriptor));
+    public InotifyEvent(final int watchDescriptor, final int mask) {
+        super(watchDescriptor);
         this.mask = mask;
     }
 
     /**
-     * Creates a new InotifyEvent from the specific watch descriptor, mask,
-     * cookie, and name value.
-     * 
-     * @param watchDescriptor The watch descriptor associated to the path on
-     * which this event occurred
+     * Creates a new InotifyEvent from the specific watch descriptor, mask, cookie, and name value.
+     *
+     * @param watchDescriptor The watch descriptor associated to the path on which this event
+     *     occurred
      * @param mask The mask responsible for this event
      * @param cookie Synchronization cookie associating two instances of events
      */
-    public InotifyEvent(int watchDescriptor, int mask, int cookie) {
-        super(Integer.valueOf(watchDescriptor));
+    public InotifyEvent(final int watchDescriptor, final int mask, final int cookie) {
+        super(watchDescriptor);
         this.mask = mask;
         this.cookie = cookie;
     }
 
     /**
-     * Creates a new InotifyEvent from the specific watch descriptor, mask,
-     * cookie, and name value.
-     * 
-     * @param watchDescriptor The watch descriptor associated to the path on
-     * which this event occurred
+     * Creates a new InotifyEvent from the specific watch descriptor, mask, cookie, and name value.
+     *
+     * @param watchDescriptor The watch descriptor associated to the path on which this event
+     *     occurred
      * @param mask The mask responsible for this event
      * @param cookie Synchronization cookie associating two instances of events
      * @param name Name value specific to this mask
      */
-    public InotifyEvent(int watchDescriptor, int mask, int cookie, String name) {
-        super(Integer.valueOf(watchDescriptor));
+    public InotifyEvent(
+            final int watchDescriptor, final int mask, final int cookie, final String name) {
+        super(watchDescriptor);
         this.mask = mask;
         this.cookie = cookie;
         this.name = name;
     }
 
     /**
-     * Returns the watch descriptor associated to the path on which this event
-     * occurred.
-     * 
+     * Returns the watch descriptor associated to the path on which this event occurred.
+     *
      * @return Watch descriptor responsible for this event
      */
     @Override
@@ -109,7 +99,7 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Gets the mask field of this event.
-     * 
+     *
      * @return int
      */
     public final int getMask() {
@@ -118,7 +108,7 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Gets the cookie field of this event.
-     * 
+     *
      * @return int
      */
     public final int getCookie() {
@@ -127,12 +117,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Gets the name field of this event, or null if none is set.
-     * <p>
-     * <cite> The name field is only present when an event is returned for a
-     * file inside a watched directory; it identifies the file pathname relative
-     * to the watched directory. </cite>
-     * </p>
-     * 
+     *
+     * <p><cite> The name field is only present when an event is returned for a file inside a
+     * watched directory; it identifies the file pathname relative to the watched directory. </cite>
+     *
      * @return String
      */
     public final String getName() {
@@ -141,7 +129,7 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Gets the contextual name field of this event, or null if none is set.
-     * 
+     *
      * @return String
      */
     public final String getContextualName() {
@@ -150,170 +138,149 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Sets the contextual name field of this event.
-     * 
-     * @param contextualName The contextual name of this event, typically the
-     * full path for which the event occurred
+     *
+     * @param contextualName The contextual name of this event, typically the full path for which
+     *     the event occurred
      */
-    public final void setContextualName(String contextualName) {
+    public final void setContextualName(final String contextualName) {
         this.contextualName = contextualName;
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Access}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Access}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Access} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Access} is set, {@code
+     *     false} otherwise
      */
     public boolean isAccess() {
         return (Event.isSet(Event.Access, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_No_Write} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_No_Write} is set, {@code
-     * false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close_No_Write} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close_No_Write} is set,
+     *     {@code false} otherwise
      */
     public boolean isCloseNoWrite() {
         return (Event.isSet(Event.Close_No_Write, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_Write} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_Write} is set, {@code
-     * false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close_Write} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close_Write} is set,
+     *     {@code false} otherwise
      */
     public boolean isCloseWrite() {
         return (Event.isSet(Event.Close_Write, mask));
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close} is set, {@code
+     *     false} otherwise
      */
     public boolean isClose() {
         return (Event.isSet(Event.Close, mask));
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Create}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Create}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Create} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Create} is set, {@code
+     *     false} otherwise
      */
     public boolean isCreate() {
         return (Event.isSet(Event.Create, mask));
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete} is set, {@code
+     *     false} otherwise
      */
     public boolean isDelete() {
         return (Event.isSet(Event.Delete, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Delete_Self} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Delete_Self} is set, {@code
-     * false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete_Self} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete_Self} is set,
+     *     {@code false} otherwise
      */
     public boolean isDeleteSelf() {
         return (Event.isSet(Event.Delete_Self, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Metadata} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Metadata} is set, {@code false}
-     * otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Metadata} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Metadata} is set, {@code
+     *     false} otherwise
      */
     public boolean isMetadata() {
         return (Event.isSet(Event.Metadata, mask));
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Modify}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Modify}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Modify} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Modify} is set, {@code
+     *     false} otherwise
      */
     public boolean isModify() {
         return (Event.isSet(Event.Modify, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Move_Self} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Move_Self} is set, {@code
-     * false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Move_Self} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Move_Self} is set, {@code
+     *     false} otherwise
      */
     public boolean isMoveSelf() {
         return (Event.isSet(Event.Move_Self, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_From} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_From} is set, {@code
-     * false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved_From} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved_From} is set,
+     *     {@code false} otherwise
      */
     public boolean isMovedFrom() {
         return (Event.isSet(Event.Moved_From, mask));
     }
 
     /**
-     * Returns {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_To} is set.
-     * 
-     * @return {@code true} if
-     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_To} is set, {@code false}
-     * otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved_To} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved_To} is set, {@code
+     *     false} otherwise
      */
     public boolean isMovedTo() {
         return (Event.isSet(Event.Moved_To, mask));
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved} is set, {@code
+     *     false} otherwise
      */
     public boolean isMoved() {
         return (Event.isSet(Event.Moved, mask));
     }
 
     /**
-     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Open}
-     * is set.
-     * 
-     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Open}
-     * is set, {@code false} otherwise
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Open} is set.
+     *
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Open} is set, {@code
+     *     false} otherwise
      */
     public boolean isOpen() {
         return (Event.isSet(Event.Open, mask));
@@ -321,112 +288,103 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if this is a named event, {@code false} otherwise.
-     * 
+     *
      * @return boolean {@code true} if name is present, {@code false} otherwise
      */
     public boolean isNamedEvent() {
-        if (name != null)
-            return true;
-        return false;
+        return name != null;
     }
 
     /**
-     * Returns {@code true} if the event is about a directory, {@code false}
-     * otherwise.
-     * 
-     * @return boolean {@code true} if the event concerns a directory, {@code
-     * false} otherwise
+     * Returns {@code true} if the event is about a directory, {@code false} otherwise.
+     *
+     * @return boolean {@code true} if the event concerns a directory, {@code false} otherwise
      * @see ch.ubique.uetlib.inotify.enums.EventModifier#Is_Directory
      */
     public boolean aboutDirectory() {
-        if (EventModifier.isSet(EventModifier.Is_Directory, mask))
-            return true;
-        return false;
+        return EventModifier.isSet(EventModifier.Is_Directory, mask);
     }
 
     /**
-     * Returns {@code true} if a watch was explicitly or automatically removed
-     * due to a deletion or unmount, {@code false} otherwise.
-     * 
+     * Returns {@code true} if a watch was explicitly or automatically removed due to a deletion or
+     * unmount, {@code false} otherwise.
+     *
      * @return boolean
      * @see ch.ubique.uetlib.inotify.enums.EventModifier#Ignored
      */
     public boolean isIgnored() {
-        if (EventModifier.isSet(EventModifier.Ignored, mask))
-            return true;
-        return false;
+        return EventModifier.isSet(EventModifier.Ignored, mask);
     }
 
     /**
-     * Returns {@code true} if the filesystem on which the file or directory
-     * resides was unounted, {@code false} otherwise.
-     * 
-     * @return boolean {@code true} if underlying filesystem was unmounted,
-     * {@code false} otherwise
+     * Returns {@code true} if the filesystem on which the file or directory resides was unounted,
+     * {@code false} otherwise.
+     *
+     * @return boolean {@code true} if underlying filesystem was unmounted, {@code false} otherwise
      * @see ch.ubique.uetlib.inotify.enums.EventModifier#Unmount
      */
     public boolean isUnmounted() {
-        if (EventModifier.isSet(EventModifier.Unmount, mask))
-            return true;
-        return false;
+        return EventModifier.isSet(EventModifier.Unmount, mask);
     }
 
     /**
-     * Returns {@code true} if the event queue overflowed, {@code false}
-     * otherwise.
-     * 
-     * @return boolean {@code true} if the event queue overflowed, {@code false}
-     * otherwise
+     * Returns {@code true} if the event queue overflowed, {@code false} otherwise.
+     *
+     * @return boolean {@code true} if the event queue overflowed, {@code false} otherwise
      * @see ch.ubique.uetlib.inotify.enums.EventModifier#Event_Queue_Overflow
      */
     public boolean isOverflowed() {
-        if (EventModifier.isSet(EventModifier.Event_Queue_Overflow, mask))
-            return true;
-        return false;
+        return EventModifier.isSet(EventModifier.Event_Queue_Overflow, mask);
     }
 
     /**
      * Returns a String representation of this InotifyEvent object.
-     * 
+     *
      * @return String representation of this InotifyEvent object
      */
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
+        final StringBuilder s = new StringBuilder();
         s.append(getClass().getSimpleName());
         s.append(" [wd=");
         s.append(getSource());
         s.append(", mask=");
         s.append(mask);
 
-        Event[] evs = Event.maskToEvents(mask);
-        if (evs.length != 0)
+        final Event[] evs = Event.maskToEvents(mask);
+        if (evs.length != 0) {
             s.append(", events [");
-
-        for (int i = 0; i < evs.length; i++) {
-            if (i != 0)
-                s.append(", " + evs[i]);
-            else
-                s.append(evs[i]);
         }
 
-        if (evs.length != 0)
-            s.append("]");
+        for (int i = 0; i < evs.length; i++) {
+            if (i != 0) {
+                s.append(", ").append(evs[i]);
+            } else {
+                s.append(evs[i]);
+            }
+        }
 
-        EventModifier[] mods = EventModifier.maskToEventModifiers(mask);
-        if (mods.length != 0)
+        if (evs.length != 0) {
+            s.append("]");
+        }
+
+        final EventModifier[] mods = EventModifier.maskToEventModifiers(mask);
+        if (mods.length != 0) {
             s.append(", mods [");
+        }
 
         for (int i = 0; i < mods.length; i++) {
             if (i != 0) {
                 s.append(", ");
                 s.append(mods[i]);
-            } else
+            } else {
                 s.append(mods[i]);
+            }
         }
 
-        if (mods.length != 0)
+        if (mods.length != 0) {
             s.append("]");
+        }
 
         s.append(", cookie=");
         s.append(cookie);
@@ -445,5 +403,4 @@ public class InotifyEvent extends EventObject {
 
         return s.toString();
     }
-
 }

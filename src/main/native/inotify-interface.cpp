@@ -37,7 +37,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *j, void *reserved) {
     JNIEnv *e;
     jclass class_inst;
 
-    j->GetEnv((void **) &e, JNI_VERSION_9);
+    if (j->GetEnv((void **) &e, JNI_VERSION_9) != JNI_OK) return JNI_ERR;
 
     /* Classes */
     class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/exceptions/UserWatchLimitException");
@@ -92,9 +92,10 @@ fail:
 JNIEXPORT void JNI_OnUnload(JavaVM *j, void *reserved) { 
     debug(__func__);
     JNIEnv *e;
-    j->GetEnv((void **) &e, JNI_VERSION_9);
+    if (j->GetEnv((void **) &e, JNI_VERSION_9) != JNI_OK) return;
 
     /* Classes */
+    (e)->DeleteGlobalRef(user_watch_limit_exception);
     (e)->DeleteGlobalRef(user_instance_limit_exception);
     (e)->DeleteGlobalRef(system_limit_exception);
     (e)->DeleteGlobalRef(insufficient_kernel_memory_exception);
@@ -152,6 +153,12 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_init(JNIEnv *
     // pipe_fds[0] is the read end, pipe_fds[1], the write end
     (e)->CallVoidMethod(j, (e)->GetMethodID(native_inotify, "setPipes", "(II)V"), pipe_fds[0], pipe_fds[1]);
 
+    if ((e)->ExceptionCheck()) {
+        close(pipe_fds[0]);
+        close(pipe_fds[1]);
+        close(fd);
+        return -1;
+    }
     return fd;
 }
 
@@ -162,6 +169,7 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_init(JNIEnv *
  */
 JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_close(JNIEnv *e, jobject j, jint fd) {
     jint pw = (e)->CallIntMethod(j, (e)->GetMethodID(native_inotify, "getPipeWrite", "()I"));
+    if ((e)->ExceptionCheck()) return;
     /* Close the write end of the pipe. */
     int ret = close(pw);
     if (ret < 0) {
@@ -241,8 +249,10 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_rm_1watch(
 JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_read(
         JNIEnv *e, jobject j, jint fd) {
     jint in_fd = (e)->CallIntMethod(j, (e)->GetMethodID(native_inotify, "getFileDescriptor", "()I"));
+    if ((e)->ExceptionCheck()) return;
     jint pip_fd = (e)->CallIntMethod(j, (e)->GetMethodID(native_inotify, "getPipeRead", "()I"));
-    jthrowable thrwbl;
+    if ((e)->ExceptionCheck()) return;
+    jthrowable thrwbl = NULL;
     char *buf = NULL;
     int nfds;
 
@@ -369,6 +379,7 @@ JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_read(
             offset += evSize;
         }
         free(buf);
+        buf = NULL;
     }
 
 EXCEPTION_OCCURRED:
@@ -381,6 +392,7 @@ EXCEPTION_OCCURRED:
 
 END_READ:
     if (buf) free(buf);
+    if (epfd >= 0) close(epfd);
     close(pip_fd);
     close(in_fd);
     return;
