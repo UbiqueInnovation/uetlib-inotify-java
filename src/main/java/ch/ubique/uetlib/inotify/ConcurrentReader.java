@@ -1,39 +1,31 @@
 /**
- * Copyright © 2009 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+ * Copyright © 2009 Nick Bargnesi <nick@den-4.com>. All rights reserved.
  *
- * inotify-java is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * <p>inotify-java is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version.
  *
- * inotify-java is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>inotify-java is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>You should have received a copy of the GNU Lesser General Public License along with
+ * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * File: Inotify.java
- * Project: inotify-java
- * Package: ch.ubique.uetlib.inotify
- * Author: Nick Bargnesi
+ * <p>File: Inotify.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
+ * Bargnesi
  */
 package ch.ubique.uetlib.inotify;
 
+import ch.ubique.uetlib.inotify.exceptions.InotifyException;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
-
 /**
- * Thread-based native queue reader. This class extends the
- * {@link NativeInotify} base by implicitly servicing the native queue with a
- * daemonized thread.
- * <p>
- * The created daemon thread will be named
- * {@code ConcurrentReader:[fileDescriptor]}, where the file descriptor is
- * associated with the parent native inotify instance.
- * </p>
+ * Thread-based native queue reader. This class extends the {@link NativeInotify} base by implicitly
+ * servicing the native queue with a daemonized thread.
+ *
+ * <p>The created daemon thread will be named {@code ConcurrentReader:[fileDescriptor]}, where the
+ * file descriptor is associated with the parent native inotify instance.
  *
  * @author Nick Bargnesi
  */
@@ -42,19 +34,21 @@ public abstract class ConcurrentReader extends NativeInotify implements Uncaught
     /**
      * Constructs a concurrent reader.
      *
-     * @throws InotifyException Thrown when the watcher could not be created; a
-     *         cause will be provided to the thrown object.
+     * @throws InotifyException Thrown when the watcher could not be created; a cause will be
+     *     provided to the thrown object.
      */
     public ConcurrentReader() throws InotifyException {
         super();
-        final Thread reader = new Thread(new Runnable() {
+        final Thread reader =
+                new Thread(
+                        new Runnable() {
 
-            @Override
-            public void run() {
-                read();
-            }
-
-        }, "ConcurrentReader:" + fileDescriptor); //$NON-NLS-1$
+                            @Override
+                            public void run() {
+                                read();
+                            }
+                        },
+                        "ConcurrentReader:" + fileDescriptor); // $NON-NLS-1$
 
         // Thread lives only to serve user threads; thread can be daemonized.
         reader.setDaemon(false);
@@ -63,8 +57,8 @@ public abstract class ConcurrentReader extends NativeInotify implements Uncaught
     }
 
     /**
-     * Method invoked when the anonymous runnable terminates due to the uncaught
-     * exception {@code e}. This handler destroys the Inotify instance.
+     * Method invoked when the anonymous runnable terminates due to the uncaught exception {@code
+     * e}. This handler destroys the Inotify instance.
      *
      * @param t Terminating thread
      * @param e Uncaught exception
@@ -74,5 +68,4 @@ public abstract class ConcurrentReader extends NativeInotify implements Uncaught
         e.printStackTrace();
         destroy();
     }
-
 }
