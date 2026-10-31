@@ -14,23 +14,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  *
- * File: NonThreadSafe.java
- * Project: inotify-trunk
- * Package: com.den_4.inotify_java
+ * File: EventQueueFull.java
+ * Project: inotify-java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
+package ch.ubique.uetlib.inotify;
 
-package com.den_4.inotify_java;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.EventObject;
 
 /**
- * Marker annotation defining non-thread-safe implementations.
+ * EventQueueFull is an event notifying listeners that an event queue is full.
  * 
  * @author Nick Bargnesi
  */
-@Retention(RetentionPolicy.SOURCE)
-public @interface NonThreadSafe {
-    // Empty interface
+public class EventQueueFull extends EventObject {
+
+    /**
+     * Creates a new event queue full from the specific file descriptor.
+     * 
+     * @param fileDescriptor The file descriptor associated with an inotify
+     *        event queue.
+     */
+    public EventQueueFull(int fileDescriptor) {
+        super(fileDescriptor);
+    }
+
 }

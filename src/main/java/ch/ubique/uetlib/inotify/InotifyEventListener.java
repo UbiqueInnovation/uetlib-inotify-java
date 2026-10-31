@@ -14,30 +14,35 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  *
- * File: EventQueueFull.java
+ * File: InotifyEventListener.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java;
 
-import java.util.EventObject;
+package ch.ubique.uetlib.inotify;
 
 /**
- * EventQueueFull is an event notifying listeners that an event queue is full.
+ * Interface specifying implementors that can receive
+ * {@link ch.ubique.uetlib.inotify.InotifyEvent inotify events} from
+ * {@link ch.ubique.uetlib.inotify.NativeInotify inotify} classes.
  * 
  * @author Nick Bargnesi
  */
-public class EventQueueFull extends EventObject {
+public interface InotifyEventListener {
 
     /**
-     * Creates a new event queue full from the specific file descriptor.
+     * Invoked when an event occurred on a watched file or directory.
      * 
-     * @param fileDescriptor The file descriptor associated with an inotify
-     *        event queue.
+     * @param e InotifyEvent
      */
-    public EventQueueFull(int fileDescriptor) {
-        super(fileDescriptor);
-    }
+    public abstract void filesystemEventOccurred(InotifyEvent e);
+
+    /**
+     * Invoked when an inotify event queue has reached capacity.
+     * 
+     * @param e EventQueueFull
+     */
+    public abstract void queueFull(EventQueueFull e);
 
 }

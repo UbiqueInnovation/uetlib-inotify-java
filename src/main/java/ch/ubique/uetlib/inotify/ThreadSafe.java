@@ -14,35 +14,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  *
- * File: InotifyEventListener.java
- * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * File: ThreadSafe.java
+ * Project: inotify-trunk
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
 
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Interface specifying implementors that can receive
- * {@link com.den_4.inotify_java.InotifyEvent inotify events} from
- * {@link com.den_4.inotify_java.NativeInotify inotify} classes.
+ * Marker annotation defining thread-safe implementations.
  * 
  * @author Nick Bargnesi
  */
-public interface InotifyEventListener {
-
-    /**
-     * Invoked when an event occurred on a watched file or directory.
-     * 
-     * @param e InotifyEvent
-     */
-    public abstract void filesystemEventOccurred(InotifyEvent e);
-
-    /**
-     * Invoked when an inotify event queue has reached capacity.
-     * 
-     * @param e EventQueueFull
-     */
-    public abstract void queueFull(EventQueueFull e);
-
+@Retention(RetentionPolicy.SOURCE)
+public @interface ThreadSafe {
+    // Empty interface
 }

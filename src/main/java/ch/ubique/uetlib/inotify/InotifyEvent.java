@@ -16,21 +16,21 @@
  *
  * File: InotifyEvent.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
 
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import java.util.EventObject;
 
-import com.den_4.inotify_java.enums.Event;
-import com.den_4.inotify_java.enums.EventModifier;
+import ch.ubique.uetlib.inotify.enums.Event;
+import ch.ubique.uetlib.inotify.enums.EventModifier;
 
 /**
  * InotifyEvent is an event carrying data relevant to a watched file system.
  * Events are associated with a specific instance of the
- * {@link com.den_4.inotify_java.NativeInotify} class.
+ * {@link ch.ubique.uetlib.inotify.NativeInotify} class.
  * 
  * @author Nick Bargnesi
  */
@@ -47,7 +47,7 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Contains a contextual name optionally provided by the
-     * {@link com.den_4.inotify_java.NativeInotify NativeInotify} derived type.
+     * {@link ch.ubique.uetlib.inotify.NativeInotify NativeInotify} derived type.
      */
     private String contextualName;
 
@@ -159,10 +159,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Access}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Access}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Access}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Access}
      * is set, {@code false} otherwise
      */
     public boolean isAccess() {
@@ -171,10 +171,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Close_No_Write} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_No_Write} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Close_No_Write} is set, {@code
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_No_Write} is set, {@code
      * false} otherwise
      */
     public boolean isCloseNoWrite() {
@@ -183,10 +183,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Close_Write} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_Write} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Close_Write} is set, {@code
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Close_Write} is set, {@code
      * false} otherwise
      */
     public boolean isCloseWrite() {
@@ -194,10 +194,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Close}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Close}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Close}
      * is set, {@code false} otherwise
      */
     public boolean isClose() {
@@ -205,10 +205,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Create}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Create}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Create}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Create}
      * is set, {@code false} otherwise
      */
     public boolean isCreate() {
@@ -216,10 +216,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Delete}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Delete}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Delete}
      * is set, {@code false} otherwise
      */
     public boolean isDelete() {
@@ -228,10 +228,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Delete_Self} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Delete_Self} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Delete_Self} is set, {@code
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Delete_Self} is set, {@code
      * false} otherwise
      */
     public boolean isDeleteSelf() {
@@ -240,10 +240,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Metadata} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Metadata} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Metadata} is set, {@code false}
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Metadata} is set, {@code false}
      * otherwise
      */
     public boolean isMetadata() {
@@ -251,10 +251,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Modify}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Modify}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Modify}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Modify}
      * is set, {@code false} otherwise
      */
     public boolean isModify() {
@@ -263,10 +263,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Move_Self} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Move_Self} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Move_Self} is set, {@code
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Move_Self} is set, {@code
      * false} otherwise
      */
     public boolean isMoveSelf() {
@@ -275,10 +275,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Moved_From} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_From} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Moved_From} is set, {@code
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_From} is set, {@code
      * false} otherwise
      */
     public boolean isMovedFrom() {
@@ -287,10 +287,10 @@ public class InotifyEvent extends EventObject {
 
     /**
      * Returns {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Moved_To} is set.
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_To} is set.
      * 
      * @return {@code true} if
-     * {@link com.den_4.inotify_java.enums.Event#Moved_To} is set, {@code false}
+     * {@link ch.ubique.uetlib.inotify.enums.Event#Moved_To} is set, {@code false}
      * otherwise
      */
     public boolean isMovedTo() {
@@ -298,10 +298,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Moved}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Moved}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Moved}
      * is set, {@code false} otherwise
      */
     public boolean isMoved() {
@@ -309,10 +309,10 @@ public class InotifyEvent extends EventObject {
     }
 
     /**
-     * Returns {@code true} if {@link com.den_4.inotify_java.enums.Event#Open}
+     * Returns {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Open}
      * is set.
      * 
-     * @return {@code true} if {@link com.den_4.inotify_java.enums.Event#Open}
+     * @return {@code true} if {@link ch.ubique.uetlib.inotify.enums.Event#Open}
      * is set, {@code false} otherwise
      */
     public boolean isOpen() {
@@ -336,7 +336,7 @@ public class InotifyEvent extends EventObject {
      * 
      * @return boolean {@code true} if the event concerns a directory, {@code
      * false} otherwise
-     * @see com.den_4.inotify_java.enums.EventModifier#Is_Directory
+     * @see ch.ubique.uetlib.inotify.enums.EventModifier#Is_Directory
      */
     public boolean aboutDirectory() {
         if (EventModifier.isSet(EventModifier.Is_Directory, mask))
@@ -349,7 +349,7 @@ public class InotifyEvent extends EventObject {
      * due to a deletion or unmount, {@code false} otherwise.
      * 
      * @return boolean
-     * @see com.den_4.inotify_java.enums.EventModifier#Ignored
+     * @see ch.ubique.uetlib.inotify.enums.EventModifier#Ignored
      */
     public boolean isIgnored() {
         if (EventModifier.isSet(EventModifier.Ignored, mask))
@@ -363,7 +363,7 @@ public class InotifyEvent extends EventObject {
      * 
      * @return boolean {@code true} if underlying filesystem was unmounted,
      * {@code false} otherwise
-     * @see com.den_4.inotify_java.enums.EventModifier#Unmount
+     * @see ch.ubique.uetlib.inotify.enums.EventModifier#Unmount
      */
     public boolean isUnmounted() {
         if (EventModifier.isSet(EventModifier.Unmount, mask))
@@ -377,7 +377,7 @@ public class InotifyEvent extends EventObject {
      * 
      * @return boolean {@code true} if the event queue overflowed, {@code false}
      * otherwise
-     * @see com.den_4.inotify_java.enums.EventModifier#Event_Queue_Overflow
+     * @see ch.ubique.uetlib.inotify.enums.EventModifier#Event_Queue_Overflow
      */
     public boolean isOverflowed() {
         if (EventModifier.isSet(EventModifier.Event_Queue_Overflow, mask))

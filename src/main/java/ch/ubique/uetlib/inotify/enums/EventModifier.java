@@ -16,11 +16,11 @@
  *
  * File: EventModifier.java
  * Project: inotify-trunk
- * Package: com.den_4.inotify_java.enums
+ * Package: ch.ubique.uetlib.inotify.enums
  * Author: Nick Bargnesi
  */
 
-package com.den_4.inotify_java.enums;
+package ch.ubique.uetlib.inotify.enums;
 
 import java.util.ArrayList;
 import java.util.HashMap;

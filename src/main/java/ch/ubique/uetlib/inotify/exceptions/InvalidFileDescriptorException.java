@@ -14,37 +14,39 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * File: SystemLimitException.java
+ * File: InvalidFileDescriptorException.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java.exceptions;
+package ch.ubique.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code ENFILE} error, indicating the
- * system limit of total file descriptors has been reached.
+ * Checked exception representing the {@code EBADF} error, indicating an invalid
+ * file descriptor.
+ * 
+ * @author Nick Bargnesi
  */
-public class SystemLimitException extends InotifyException {
+public class InvalidFileDescriptorException extends InotifyException {
 
     /**
-     * Constructs a system limit exception with {@code null} as its detail
-     * message. The cause is not initialized, and may be subsequently
+     * Constructs an invalid file descriptor exception with {@code null} as its
+     * detail message. The cause is not initialized, and may be subsequently
      * initialized by a call to {@link #initCause(Throwable)}.
      */
-    public SystemLimitException() {
+    public InvalidFileDescriptorException() {
         super();
     }
 
     /**
-     * Constructs a system limit exception with the specified detail message.
-     * The cause is not initialized, and may subsequently be initialized by a
-     * call to {@link #initCause(Throwable)}.
+     * Constructs an invalid file descriptor exception with the specified detail
+     * message. The cause is not initialized, and may subsequently be
+     * initialized by a call to {@link #initCause(Throwable)}.
      * 
      * @param message the detail message. The detail message is saved for later
      *        retrieval by the {@link #getMessage()} method.
      */
-    public SystemLimitException(String message) {
+    public InvalidFileDescriptorException(String message) {
         super(message);
     }
 

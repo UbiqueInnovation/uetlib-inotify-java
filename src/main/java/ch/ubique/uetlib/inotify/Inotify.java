@@ -16,20 +16,20 @@
  *
  * File: Inotify.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.den_4.inotify_java.enums.Event;
-import com.den_4.inotify_java.enums.WatchModifier;
-import com.den_4.inotify_java.exceptions.InotifyException;
-import com.den_4.inotify_java.exceptions.InvalidWatchDescriptorException;
+import ch.ubique.uetlib.inotify.enums.Event;
+import ch.ubique.uetlib.inotify.enums.WatchModifier;
+import ch.ubique.uetlib.inotify.exceptions.InotifyException;
+import ch.ubique.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
 
 /**
  * The {@code Inotify} class is an interface to the inotify API on Linux.

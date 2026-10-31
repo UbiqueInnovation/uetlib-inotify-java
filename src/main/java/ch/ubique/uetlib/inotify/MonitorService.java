@@ -16,10 +16,10 @@
  *
  * File: MonitorService.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -36,11 +36,11 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 
-import com.den_4.inotify_java.enums.Event;
-import com.den_4.inotify_java.enums.EventModifier;
-import com.den_4.inotify_java.enums.WatchModifier;
-import com.den_4.inotify_java.exceptions.InotifyException;
-import com.den_4.inotify_java.exceptions.InvalidWatchDescriptorException;
+import ch.ubique.uetlib.inotify.enums.Event;
+import ch.ubique.uetlib.inotify.enums.EventModifier;
+import ch.ubique.uetlib.inotify.enums.WatchModifier;
+import ch.ubique.uetlib.inotify.exceptions.InotifyException;
+import ch.ubique.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
 
 /**
  * The {@code MonitorService} class is an interface to the inotify API on Linux.

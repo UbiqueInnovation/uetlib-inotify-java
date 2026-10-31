@@ -14,39 +14,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * File: InvalidFileDescriptorException.java
+ * File: SystemLimitException.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java.exceptions;
+package ch.ubique.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code EBADF} error, indicating an invalid
- * file descriptor.
- * 
- * @author Nick Bargnesi
+ * Checked exception representing the {@code ENFILE} error, indicating the
+ * system limit of total file descriptors has been reached.
  */
-public class InvalidFileDescriptorException extends InotifyException {
+public class SystemLimitException extends InotifyException {
 
     /**
-     * Constructs an invalid file descriptor exception with {@code null} as its
-     * detail message. The cause is not initialized, and may be subsequently
+     * Constructs a system limit exception with {@code null} as its detail
+     * message. The cause is not initialized, and may be subsequently
      * initialized by a call to {@link #initCause(Throwable)}.
      */
-    public InvalidFileDescriptorException() {
+    public SystemLimitException() {
         super();
     }
 
     /**
-     * Constructs an invalid file descriptor exception with the specified detail
-     * message. The cause is not initialized, and may subsequently be
-     * initialized by a call to {@link #initCause(Throwable)}.
+     * Constructs a system limit exception with the specified detail message.
+     * The cause is not initialized, and may subsequently be initialized by a
+     * call to {@link #initCause(Throwable)}.
      * 
      * @param message the detail message. The detail message is saved for later
      *        retrieval by the {@link #getMessage()} method.
      */
-    public InvalidFileDescriptorException(String message) {
+    public SystemLimitException(String message) {
         super(message);
     }
 

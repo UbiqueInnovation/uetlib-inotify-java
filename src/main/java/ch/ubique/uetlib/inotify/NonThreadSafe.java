@@ -14,23 +14,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  *
- * File: ThreadSafe.java
+ * File: NonThreadSafe.java
  * Project: inotify-trunk
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
 
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Marker annotation defining thread-safe implementations.
+ * Marker annotation defining non-thread-safe implementations.
  * 
  * @author Nick Bargnesi
  */
 @Retention(RetentionPolicy.SOURCE)
-public @interface ThreadSafe {
+public @interface NonThreadSafe {
     // Empty interface
 }

@@ -16,10 +16,10 @@
  *
  * File: Watcher.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +28,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 
-import com.den_4.inotify_java.enums.Event;
-import com.den_4.inotify_java.exceptions.InotifyException;
+import ch.ubique.uetlib.inotify.enums.Event;
+import ch.ubique.uetlib.inotify.exceptions.InotifyException;
 
 /**
  * The {@code Watcher} class is a simple manner in which directories and files
@@ -37,9 +37,9 @@ import com.den_4.inotify_java.exceptions.InotifyException;
  * <p>
  * This class provides a number of ways to be notified of the event:
  * <dl>
- * <dt>{@link com.den_4.inotify_java.InotifyEventListener Listener}</dt>
+ * <dt>{@link ch.ubique.uetlib.inotify.InotifyEventListener Listener}</dt>
  * <dd>A listener (or set of listeners) will be notified of events via
- * {@link com.den_4.inotify_java.InotifyEventListener#filesystemEventOccurred
+ * {@link ch.ubique.uetlib.inotify.InotifyEventListener#filesystemEventOccurred
  * the notification method}.</dd>
  * <dt>{@link java.lang.Runnable Runnable}</dt>
  * <dd>Invoking the {@link java.lang.Runnable#run() run method} of a
@@ -59,7 +59,7 @@ import com.den_4.inotify_java.exceptions.InotifyException;
  * </p>
  * <p>
  * Each notification mechanism supports
- * {@link com.den_4.inotify_java.InotifyEventListener listeners} as well.
+ * {@link ch.ubique.uetlib.inotify.InotifyEventListener listeners} as well.
  * However, no guarantee is made that listeners will be notified of events in a
  * deterministic manner when using a non-listener-based model. It is reasonable
  * to assume a listener may miss generated events, due to the execution of the
@@ -124,7 +124,7 @@ public class Watcher extends ConcurrentReader {
      * @param ev Event to watch for
      * @throws InotifyException Thrown when the watcher could not be created; a
      * cause will be provided to the thrown object.
-     * @see com.den_4.inotify_java.enums.Event
+     * @see ch.ubique.uetlib.inotify.enums.Event
      */
     public Watcher(String path, Event ev) throws InotifyException {
         super();
@@ -143,7 +143,7 @@ public class Watcher extends ConcurrentReader {
      * @param l InotifyEventListener to receive events
      * @throws InotifyException Thrown when the watcher could not be created; a
      * cause will be provided to the thrown object.
-     * @see com.den_4.inotify_java.enums.Event
+     * @see ch.ubique.uetlib.inotify.enums.Event
      */
     public Watcher(String path, Event ev, InotifyEventListener l)
             throws InotifyException {
@@ -256,7 +256,7 @@ public class Watcher extends ConcurrentReader {
     }
 
     /**
-     * Adds the specified {@link com.den_4.inotify_java.InotifyEventListener
+     * Adds the specified {@link ch.ubique.uetlib.inotify.InotifyEventListener
      * listener} to be notified of events.
      * <p>
      * This method is not thread-safe. No guarantee is provided for the
@@ -277,7 +277,7 @@ public class Watcher extends ConcurrentReader {
 
     /**
      * Removes the first occurrence of the specified
-     * {@link com.den_4.inotify_java.InotifyEventListener listener} from the
+     * {@link ch.ubique.uetlib.inotify.InotifyEventListener listener} from the
      * list of event listeners.
      * 
      * @param l InotifyEventListener - null listeners are ignored
@@ -291,7 +291,7 @@ public class Watcher extends ConcurrentReader {
     }
 
     /**
-     * Removes all {@link com.den_4.inotify_java.InotifyEventListener listeners}
+     * Removes all {@link ch.ubique.uetlib.inotify.InotifyEventListener listeners}
      * from the list of event listeners.
      */
     public void removeAll() {
