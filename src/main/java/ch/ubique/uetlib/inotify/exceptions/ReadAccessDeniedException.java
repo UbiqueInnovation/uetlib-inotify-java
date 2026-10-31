@@ -16,10 +16,10 @@
  * 
  * File: ReadAccessDeniedException.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java.exceptions;
+package ch.ubique.uetlib.inotify.exceptions;
 
 /**
  * Checked exception representing the {@code EACCESS} error, indicating read

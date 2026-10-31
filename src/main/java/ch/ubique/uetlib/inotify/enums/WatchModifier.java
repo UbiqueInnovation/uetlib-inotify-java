@@ -16,11 +16,11 @@
  *
  * File: WatchModifier.java
  * Project: inotify-trunk
- * Package: com.den_4.inotify_java.enums
+ * Package: ch.ubique.uetlib.inotify.enums
  * Author: Nick Bargnesi
  */
 
-package com.den_4.inotify_java.enums;
+package ch.ubique.uetlib.inotify.enums;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * Bitmask-style enumerations extending the
- * {@link com.den_4.inotify_java.enums.Event}, limited to watch additions.
+ * {@link ch.ubique.uetlib.inotify.enums.Event}, limited to watch additions.
  * 
  * @author Nick Bargnesi
  */

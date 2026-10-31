@@ -14,40 +14,39 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with inotify-java.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * File: InvalidWatchDescriptorException.java
+ * File: OutsideAddressSpaceException.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java.exceptions;
+package ch.ubique.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code EINVAL} error, indicating a watch
- * descriptor is invalid, an event mask is invalid, or a file descriptor is not
- * an inotify file descriptor.
+ * Checked exception representing the {@code EFAULT} error, indicating a path
+ * points outside the process' accessible address space.
  * 
  * @author Nick Bargnesi
  */
-public class InvalidWatchDescriptorException extends InotifyException {
+public class OutsideAddressSpaceException extends InotifyException {
 
     /**
-     * Constructs an invalid watch descriptor exception with {@code null} as its
+     * Constructs an outside address space exception with {@code null} as its
      * detail message. The cause is not initialized, and may be subsequently
      * initialized by a call to {@link #initCause(Throwable)}.
      */
-    public InvalidWatchDescriptorException() {
+    public OutsideAddressSpaceException() {
         super();
     }
 
     /**
-     * Constructs an invalid watch descriptor exception with the specified
-     * detail message. The cause is not initialized, and may subsequently be
+     * Constructs an outside address space exception with the specified detail
+     * message. The cause is not initialized, and may subsequently be
      * initialized by a call to {@link #initCause(Throwable)}.
      * 
      * @param message the detail message. The detail message is saved for later
      *        retrieval by the {@link #getMessage()} method.
      */
-    public InvalidWatchDescriptorException(String message) {
+    public OutsideAddressSpaceException(String message) {
         super(message);
     }
 

@@ -16,14 +16,14 @@
  *
  * File: Inotify.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import com.den_4.inotify_java.exceptions.InotifyException;
+import ch.ubique.uetlib.inotify.exceptions.InotifyException;
 
 /**
  * Thread-based native queue reader. This class extends the

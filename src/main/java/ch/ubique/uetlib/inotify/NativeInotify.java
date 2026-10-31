@@ -16,10 +16,10 @@
  *
  * File: Inotify.java
  * Project: inotify-java
- * Package: com.den_4.inotify_java
+ * Package: ch.ubique.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package com.den_4.inotify_java;
+package ch.ubique.uetlib.inotify;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -33,12 +33,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
-import com.den_4.inotify_java.exceptions.InotifyException;
-import com.den_4.inotify_java.exceptions.InsufficientKernelMemoryException;
-import com.den_4.inotify_java.exceptions.InvalidWatchDescriptorException;
-import com.den_4.inotify_java.exceptions.SystemLimitException;
-import com.den_4.inotify_java.exceptions.UserInstanceLimitException;
-import com.den_4.inotify_java.exceptions.UserWatchLimitException;
+import ch.ubique.uetlib.inotify.exceptions.InotifyException;
+import ch.ubique.uetlib.inotify.exceptions.InsufficientKernelMemoryException;
+import ch.ubique.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
+import ch.ubique.uetlib.inotify.exceptions.SystemLimitException;
+import ch.ubique.uetlib.inotify.exceptions.UserInstanceLimitException;
+import ch.ubique.uetlib.inotify.exceptions.UserWatchLimitException;
 
 /**
  * This class serves as the base class for all Inotify types, providing a bridge
@@ -106,7 +106,7 @@ public abstract class NativeInotify {
 	 * Returns {@code true} if the native library has been loaded, {@code false} if
 	 * not.
 	 * <p>
-	 * This method is {@link com.den_4.inotify_java.ThreadSafe thread-safe}.
+	 * This method is {@link ch.ubique.uetlib.inotify.ThreadSafe thread-safe}.
 	 * </p>
 	 * 
 	 * @return {@code true} if the native library has been loaded, {@code false} if
@@ -127,7 +127,7 @@ public abstract class NativeInotify {
 	 * {@code filename} value of {@code null} will result in the library being
 	 * loaded using the library paths provided to the virtual machine.
 	 * <p>
-	 * This method is {@link com.den_4.inotify_java.ThreadSafe thread-safe}.
+	 * This method is {@link ch.ubique.uetlib.inotify.ThreadSafe thread-safe}.
 	 * </p>
 	 * 
 	 * @param filename The file to load
@@ -247,7 +247,7 @@ public abstract class NativeInotify {
 	/**
 	 * Destroys the underlying native instance, thus freeing allocated native
 	 * resources. This method is a no-op if the
-	 * {@link com.den_4.inotify_java.NativeInotify NativeInotify} object is not
+	 * {@link ch.ubique.uetlib.inotify.NativeInotify NativeInotify} object is not
 	 * active.
 	 * 
 	 * @see #isActive()
@@ -405,7 +405,7 @@ public abstract class NativeInotify {
 
 	/**
 	 * Sets the read and write file descriptors of the IPC pipe associated with this
-	 * {@link com.den_4.inotify_java.NativeInotify NativeInotify} object.
+	 * {@link ch.ubique.uetlib.inotify.NativeInotify NativeInotify} object.
 	 * 
 	 * @param readEnd  File descriptor of pipe read end
 	 * @param writeEnd File descriptor of pipe write end

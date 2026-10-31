@@ -16,11 +16,11 @@
  *
  * File: InotifyException.java
  * Project: inotify-trunk
- * Package: com.den_4.inotify_java.exceptions
+ * Package: ch.ubique.uetlib.inotify.exceptions
  * Author: Nick Bargnesi
  */
 
-package com.den_4.inotify_java.exceptions;
+package ch.ubique.uetlib.inotify.exceptions;
 
 /**
  * Base class of all checked exceptions within <b>inotify-java</b>.
