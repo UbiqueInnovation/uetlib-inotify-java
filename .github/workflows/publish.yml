@@ -1,0 +1,29 @@
+name: Publish
+on:
+  push:
+    tags: [ v* ]
+
+jobs:
+  verify-linux:
+    name: Linux verification
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends g++
+      - run: ./scripts/verify-linux.sh
+
+  publish:
+    needs: verify-linux
+    permissions:
+      contents: write
+    uses: UbiqueInnovation/uetlib/.github/workflows/mvn-publish.yml@741b4e58da1bb075f34aaa6df3bc5794de1e5a6b # opensourcing (unreleased; re-pin to the released workflow)
+    secrets: inherit

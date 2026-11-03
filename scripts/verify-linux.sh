@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-mvn -B -DskipTests clean compile
-./scripts/build-native.sh
-mkdir -p target/classes/native
-cp target/native/libinotify-java-noglobal.so target/classes/native/
-mvn -B verify spotless:check
+# The Maven build compiles and bundles the native library.
+mvn -B clean verify spotless:check
 
 # Exercise extraction/loading from the deliverable JAR without the build .so on java.library.path.
 mvn -B org.apache.maven.plugins:maven-dependency-plugin:3.9.0:build-classpath \

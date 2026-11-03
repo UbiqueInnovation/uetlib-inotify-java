@@ -1,7 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ch.ubique.uetlib</groupId>
+    <parent>
+        <groupId>ch.ubique.uetlib</groupId>
+        <artifactId>uetlib-parent</artifactId>
+        <version>2026.11.0</version>
+        <relativePath/>
+    </parent>
     <artifactId>uetlib-inotify-java</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <name>uetlib inotify-java</name>
@@ -25,7 +30,7 @@
         </developer>
     </developers>
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <native.library.path>${project.build.directory}/native</native.library.path>
     </properties>
@@ -66,11 +71,34 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.15.0</version>
                 <configuration>
-                    <compilerArgs>
+                    <!-- Keep the upstream JNI sources free of backend annotation processors. -->
+                    <proc>none</proc>
+                    <compilerArgs combine.self="override">
                         <arg>-h</arg>
                         <arg>${project.build.directory}/native-headers</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+            <!-- Build and bundle the Linux JNI library from the generated headers; no JAR is native-empty. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.4</version>
+                <executions>
+                    <execution>
+                        <id>build-native</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${project.basedir}/scripts/build-native.sh</executable>
+                            <environmentVariables>
+                                <JAVA_HOME>${java.home}</JAVA_HOME>
+                            </environmentVariables>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

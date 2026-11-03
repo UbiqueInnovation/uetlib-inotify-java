@@ -16,7 +16,7 @@ unmigrate() {
         -e 's|ch_ubique_uetlib_inotify_NativeInotify|com_den_4_inotify_java_NativeInotify|g' "$1"
 }
 if [[ -z "${NATIVE_LIBRARY_PATH:-}" ]]; then
-    : "${JAVA_HOME:?Set JAVA_HOME to a Linux JDK (9+)}"
+    : "${JAVA_HOME:?Set JAVA_HOME to a Linux JDK 25}"
     for source in src/main/native/*; do
         unmigrate "$source" > "target/reference-native-src/$(basename "$source")"
     done
@@ -29,7 +29,7 @@ if [[ -z "${NATIVE_LIBRARY_PATH:-}" ]]; then
 fi
 unmigrate src/test/java/ch/ubique/uetlib/inotify/NativeIntegrationTest.java \
     > target/reference-test-src/NativeIntegrationTest.java
-javac --release 11 -cp "$REFERENCE_JAR:$(cat target/test-classpath.txt)" \
+javac --release 25 -cp "$REFERENCE_JAR:$(cat target/test-classpath.txt)" \
     -d target/reference-test-classes target/reference-test-src/NativeIntegrationTest.java
 java -Xcheck:jni -Djava.library.path="${NATIVE_LIBRARY_PATH:-$PWD/target/reference-native}" \
     -cp "$REFERENCE_JAR:target/reference-test-classes:$(cat target/test-classpath.txt)" \
