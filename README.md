@@ -12,7 +12,7 @@ byte-identical reproduction of the historical binary. See [PROVENANCE.md](PROVEN
 ## Build and test
 
 Linux JDK 25, Maven and g++ are required for the complete build (Java bytecode
-targets Java 11). From the repository root:
+targets Java 25). From the repository root:
 
 ```sh
 ./scripts/verify-linux.sh

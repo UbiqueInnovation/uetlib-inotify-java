@@ -7,3 +7,5 @@ mkdir -p target/native
 "${CXX:-g++}" -std=c++11 -O0 -fPIC -shared -fstack-protector-strong \
     -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" -Itarget/native-headers \
     src/main/native/inotify-interface.cpp -o target/native/libinotify-java-noglobal.so
+mkdir -p target/classes/native
+cp target/native/libinotify-java-noglobal.so target/classes/native/
