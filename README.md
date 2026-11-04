@@ -5,7 +5,7 @@ recovered Ubique `ch.ubique:inotify:2.0` project. Java packages are
 `ch.ubique.uetlib.inotify` (including matching JNI bindings). This library is
 **LGPL-3.0-or-later**, including its native implementation; see LICENSE, COPYING and COPYING.LESSER.
 
-Development coordinate: `ch.ubique.uetlib:uetlib-inotify-java:3.0.0-SNAPSHOT`.
+Development coordinate: `ch.uetlib:uetlib-inotify-java:3.0.0-SNAPSHOT`.
 Nothing has been published. The native reconstruction is not claimed to be a
 byte-identical reproduction of the historical binary. See [PROVENANCE.md](PROVENANCE.md).
 

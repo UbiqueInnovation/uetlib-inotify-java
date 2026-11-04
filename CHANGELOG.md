@@ -8,7 +8,7 @@
 - Reconstruct the native `noglobal` implementation using upstream's epoll loop
   and symbolized disassembly of the historical binary.
 - Move Maven coordinates from `ch.ubique:inotify:2.0` to
-  `ch.ubique.uetlib:uetlib-inotify-java`.
+  `ch.uetlib:uetlib-inotify-java`.
 - Add Linux native build, generated JNI headers and behavioral comparison tests.
 - Retain LGPL licensing, source provenance and explicit reconstruction limits.
 - Fix shutdown double-free, epoll descriptor cleanup, omitted class-reference
