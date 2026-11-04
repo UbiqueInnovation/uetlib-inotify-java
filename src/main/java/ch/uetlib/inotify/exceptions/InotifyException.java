@@ -12,10 +12,10 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: InotifyException.java Project: inotify-trunk Package:
- * ch.ubique.uetlib.inotify.exceptions Author: Nick Bargnesi
+ * <p>File: InotifyException.java Project: inotify-trunk Package: ch.uetlib.inotify.exceptions
+ * Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify.exceptions;
+package ch.uetlib.inotify.exceptions;
 
 /**
  * Base class of all checked exceptions within <b>inotify-java</b>.

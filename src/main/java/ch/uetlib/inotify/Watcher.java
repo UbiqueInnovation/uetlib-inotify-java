@@ -12,13 +12,13 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: Watcher.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
- * Bargnesi
+ * <p>File: Watcher.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
-import ch.ubique.uetlib.inotify.enums.Event;
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
+import ch.uetlib.inotify.enums.Event;
+import ch.uetlib.inotify.exceptions.InotifyException;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
@@ -33,10 +33,9 @@ import java.util.concurrent.Semaphore;
  * <p>This class provides a number of ways to be notified of the event:
  *
  * <dl>
- *   <dt>{@link ch.ubique.uetlib.inotify.InotifyEventListener Listener}
+ *   <dt>{@link ch.uetlib.inotify.InotifyEventListener Listener}
  *   <dd>A listener (or set of listeners) will be notified of events via {@link
- *       ch.ubique.uetlib.inotify.InotifyEventListener#filesystemEventOccurred the notification
- *       method}.
+ *       ch.uetlib.inotify.InotifyEventListener#filesystemEventOccurred the notification method}.
  *   <dt>{@link java.lang.Runnable Runnable}
  *   <dd>Invoking the {@link java.lang.Runnable#run() run method} of a {@link java.lang.Runnable
  *       Runnable}.
@@ -51,8 +50,8 @@ import java.util.concurrent.Semaphore;
  *       java.util.concurrent.Semaphore semaphore}.
  * </dl>
  *
- * <p>Each notification mechanism supports {@link ch.ubique.uetlib.inotify.InotifyEventListener
- * listeners} as well. However, no guarantee is made that listeners will be notified of events in a
+ * <p>Each notification mechanism supports {@link ch.uetlib.inotify.InotifyEventListener listeners}
+ * as well. However, no guarantee is made that listeners will be notified of events in a
  * deterministic manner when using a non-listener-based model. It is reasonable to assume a listener
  * may miss generated events, due to the execution of the object's constructor, followed by a
  * successive {@link #addListener(InotifyEventListener)} invocation.
@@ -105,7 +104,7 @@ public class Watcher extends ConcurrentReader {
      * @param ev Event to watch for
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
-     * @see ch.ubique.uetlib.inotify.enums.Event
+     * @see ch.uetlib.inotify.enums.Event
      */
     public Watcher(String path, Event ev) throws InotifyException {
         super();
@@ -123,7 +122,7 @@ public class Watcher extends ConcurrentReader {
      * @param l InotifyEventListener to receive events
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
-     * @see ch.ubique.uetlib.inotify.enums.Event
+     * @see ch.uetlib.inotify.enums.Event
      */
     public Watcher(String path, Event ev, InotifyEventListener l) throws InotifyException {
         super();
@@ -220,8 +219,8 @@ public class Watcher extends ConcurrentReader {
     }
 
     /**
-     * Adds the specified {@link ch.ubique.uetlib.inotify.InotifyEventListener listener} to be
-     * notified of events.
+     * Adds the specified {@link ch.uetlib.inotify.InotifyEventListener listener} to be notified of
+     * events.
      *
      * <p>This method is not thread-safe. No guarantee is provided for the resulting set of
      * listeners when this method is invoked in a non-thread-safe manner.
@@ -237,8 +236,8 @@ public class Watcher extends ConcurrentReader {
     }
 
     /**
-     * Removes the first occurrence of the specified {@link
-     * ch.ubique.uetlib.inotify.InotifyEventListener listener} from the list of event listeners.
+     * Removes the first occurrence of the specified {@link ch.uetlib.inotify.InotifyEventListener
+     * listener} from the list of event listeners.
      *
      * @param l InotifyEventListener - null listeners are ignored
      * @see java.util.List#remove(Object)
@@ -250,8 +249,8 @@ public class Watcher extends ConcurrentReader {
     }
 
     /**
-     * Removes all {@link ch.ubique.uetlib.inotify.InotifyEventListener listeners} from the list of
-     * event listeners.
+     * Removes all {@link ch.uetlib.inotify.InotifyEventListener listeners} from the list of event
+     * listeners.
      */
     public void removeAll() {
         if (listeners != null) listeners.clear();

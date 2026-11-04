@@ -12,18 +12,19 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: MonitorService.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
+ * <p>File: MonitorService.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick
  * Bargnesi
  */
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
 import static java.lang.System.currentTimeMillis;
 
-import ch.ubique.uetlib.inotify.enums.Event;
-import ch.ubique.uetlib.inotify.enums.EventModifier;
-import ch.ubique.uetlib.inotify.enums.WatchModifier;
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
-import ch.ubique.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
+import ch.uetlib.inotify.enums.Event;
+import ch.uetlib.inotify.enums.EventModifier;
+import ch.uetlib.inotify.enums.WatchModifier;
+import ch.uetlib.inotify.exceptions.InotifyException;
+import ch.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
+
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.text.ParseException;
 import java.util.Calendar;

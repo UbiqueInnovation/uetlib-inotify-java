@@ -12,37 +12,37 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: InvalidWatchDescriptorException.java Project: inotify-java Package:
- * ch.ubique.uetlib.inotify Author: Nick Bargnesi
+ * <p>File: InsufficientKernelMemoryException.java Project: inotify-java Package: ch.uetlib.inotify
+ * Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify.exceptions;
+package ch.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code EINVAL} error, indicating a watch descriptor is
- * invalid, an event mask is invalid, or a file descriptor is not an inotify file descriptor.
+ * Checked exception representing the {@code ENOMEM} error, indicating insufficient kernel memory
+ * available during the initialization of a new inotify instance.
  *
  * @author Nick Bargnesi
  */
-public class InvalidWatchDescriptorException extends InotifyException {
+public class InsufficientKernelMemoryException extends InotifyException {
 
     /**
-     * Constructs an invalid watch descriptor exception with {@code null} as its detail message. The
-     * cause is not initialized, and may be subsequently initialized by a call to {@link
+     * Constructs an insufficient kernel memory exception with {@code null} as its detail message.
+     * The cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public InvalidWatchDescriptorException() {
+    public InsufficientKernelMemoryException() {
         super();
     }
 
     /**
-     * Constructs an invalid watch descriptor exception with the specified detail message. The cause
-     * is not initialized, and may subsequently be initialized by a call to {@link
+     * Constructs a new insufficient kernel memory exception with the specified detail message. The
+     * cause is not initialized, and may subsequently be initialized by a call to {link
      * #initCause(Throwable)}.
      *
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public InvalidWatchDescriptorException(String message) {
+    public InsufficientKernelMemoryException(String message) {
         super(message);
     }
 }

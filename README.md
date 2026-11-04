@@ -2,7 +2,7 @@
 
 Linux inotify JNI bindings, derived from Nick Bargnesi's inotify-java and the
 recovered Ubique `ch.ubique:inotify:2.0` project. Java packages are
-`ch.ubique.uetlib.inotify` (including matching JNI bindings). This library is
+`ch.uetlib.inotify` (including matching JNI bindings). This library is
 **LGPL-3.0-or-later**, including its native implementation; see LICENSE, COPYING and COPYING.LESSER.
 
 Development coordinate: `ch.uetlib:uetlib-inotify-java:3.0.0-SNAPSHOT`.
@@ -41,7 +41,7 @@ resource/error-path hardening should be reviewed separately.
 
 The history separates the pristine upstream 2.0 Java/native sources, recovered ZIP
 Java plus reconstructed native changes, and the package/JNI migration to
-`ch.ubique.uetlib.inotify`. Build tooling, formatting and post-reconstruction fixes
+`ch.uetlib.inotify`. Build tooling, formatting and post-reconstruction fixes
 follow separately. Original copyright headers are retained.
 
 To compare behavior with the exact historical Java classes after building,

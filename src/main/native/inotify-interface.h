@@ -32,7 +32,7 @@
 #include <sys/ioctl.h>
 #include <sys/errno.h>
 
-#include "ch_ubique_uetlib_inotify_NativeInotify.h"
+#include "ch_uetlib_inotify_NativeInotify.h"
 #include "typedefs.h"
 
 #ifdef ENABLE_DEBUGGING
@@ -62,85 +62,85 @@ JavaVM *jvm_ptr;
 
 /*
  * Variable: user_instance_limit_exception
- *     Global reference to ch.ubique.uetlib.inotify.exceptions.UserInstanceLimitException
+ *     Global reference to ch.uetlib.inotify.exceptions.UserInstanceLimitException
  */
 jclass user_instance_limit_exception;
 
 /*
  * Variable: user_watch_limit_exception
- *     Global reference to ch.ubique.uetlib.inotify.exceptions.UserWatchLimitException
+ *     Global reference to ch.uetlib.inotify.exceptions.UserWatchLimitException
  */
 jclass user_watch_limit_exception;
 
 /*
  * Variable: system_limit_exception
- *     Global reference to ch.ubique.uetlib.inotify.exceptions.SystemLimitException
+ *     Global reference to ch.uetlib.inotify.exceptions.SystemLimitException
  */
 jclass system_limit_exception;
 
 /*
  * Variable: insufficient_kernel_memory_exception
- *     Global reference to ch.ubique.uetlib.inotify.exceptions.InsufficientKernelMemoryException
+ *     Global reference to ch.uetlib.inotify.exceptions.InsufficientKernelMemoryException
  */
 jclass insufficient_kernel_memory_exception;
 
 /*
  * Variable: inotify_exception
- *     Global reference to ch.ubique.uetlib.inotify.exceptions.InotifyException
+ *     Global reference to ch.uetlib.inotify.exceptions.InotifyException
  */
 jclass inotify_exception;
 
 /*
  * Variable: native_inotify
- *     Global reference to ch.ubique.uetlib.inotify.NativeInotify
+ *     Global reference to ch.uetlib.inotify.NativeInotify
  */
 jclass native_inotify;
 
 /*
  * Variable: inotify_event
- *     Global reference to ch.ubique.uetlib.inotify.InotifyEvent
+ *     Global reference to ch.uetlib.inotify.InotifyEvent
  */
 jclass inotify_event;
 
 /*
  * Variable: native_inotify_setPipes
- *     Global reference to ch.ubique.uetlib.inotify.NativeInotify.setPipes
+ *     Global reference to ch.uetlib.inotify.NativeInotify.setPipes
  */
 jmethodID native_inotify_setPipes;
 
 /*
  * Variable: native_inotify_getPipeWrite
- *     Global reference to ch.ubique.uetlib.inotify.NativeInotify.getPipeWrite
+ *     Global reference to ch.uetlib.inotify.NativeInotify.getPipeWrite
  */
 jmethodID native_inotify_getPipeWrite;
 
 /*
  * Variable: native_inotify_getPipeRead
- *     Global reference to ch.ubique.uetlib.inotify.NativeInotify.getPipeRead
+ *     Global reference to ch.uetlib.inotify.NativeInotify.getPipeRead
  */
 jmethodID native_inotify_getPipeRead;
 
 /*
  * Variable: native_inotify_getFileDescriptor
- *     Global reference to ch.ubique.uetlib.inotify.NativeInotify.getFileDescriptor
+ *     Global reference to ch.uetlib.inotify.NativeInotify.getFileDescriptor
  */
 jmethodID native_inotify_getFileDescriptor;
 
 /*
  * Variable: native_inotify_eventHandler
- *     Global reference to ch.ubique.uetlib.inotify.NativeInotify.eventHandler
+ *     Global reference to ch.uetlib.inotify.NativeInotify.eventHandler
  */
 jmethodID native_inotify_eventHandler;
 
 /*
  * Variable: inotify_event_init_III_V
- *     Global reference to ch.ubique.uetlib.inotify.InotifyEvent.<init>(III)
+ *     Global reference to ch.uetlib.inotify.InotifyEvent.<init>(III)
  */
 jmethodID inotify_event_init_III_V;
 
 /*
  * Variable: inotify_event_init_III_Ljava_lang_String
- *     Global reference to ch.ubique.uetlib.inotify.InotifyEvent.<init>(IIILjava.lang.String)
+ *     Global reference to ch.uetlib.inotify.InotifyEvent.<init>(IIILjava.lang.String)
  */
 jmethodID inotify_event_init_III_Ljava_lang_String;
 

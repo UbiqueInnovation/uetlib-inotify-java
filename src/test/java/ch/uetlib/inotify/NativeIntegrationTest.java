@@ -1,15 +1,17 @@
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
 import static org.junit.Assert.*;
 
-import ch.ubique.uetlib.inotify.enums.Event;
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
+import ch.uetlib.inotify.enums.Event;
+import ch.uetlib.inotify.exceptions.InotifyException;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class NativeIntegrationTest {
     @BeforeClass

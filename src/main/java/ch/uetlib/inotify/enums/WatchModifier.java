@@ -12,10 +12,10 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: WatchModifier.java Project: inotify-trunk Package: ch.ubique.uetlib.inotify.enums
- * Author: Nick Bargnesi
+ * <p>File: WatchModifier.java Project: inotify-trunk Package: ch.uetlib.inotify.enums Author: Nick
+ * Bargnesi
  */
-package ch.ubique.uetlib.inotify.enums;
+package ch.uetlib.inotify.enums;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Bitmask-style enumerations extending the {@link ch.ubique.uetlib.inotify.enums.Event}, limited to
- * watch additions.
+ * Bitmask-style enumerations extending the {@link ch.uetlib.inotify.enums.Event}, limited to watch
+ * additions.
  *
  * @author Nick Bargnesi
  */

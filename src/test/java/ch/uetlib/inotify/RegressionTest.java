@@ -1,13 +1,15 @@
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
 import static org.junit.Assert.*;
 
-import ch.ubique.uetlib.inotify.enums.Event;
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import ch.uetlib.inotify.enums.Event;
+import ch.uetlib.inotify.exceptions.InotifyException;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class RegressionTest {
     @BeforeClass
@@ -23,8 +25,7 @@ public class RegressionTest {
             int wd = watcher.addWatch(directory.toString(), Event.Create);
             assertTrue(watcher.removeWatch(wd));
             watcher.eventHandler(
-                    new InotifyEvent(
-                            wd, ch.ubique.uetlib.inotify.enums.EventModifier.Ignored.value(), 0));
+                    new InotifyEvent(wd, ch.uetlib.inotify.enums.EventModifier.Ignored.value(), 0));
             assertNull(watcher.getPath(wd));
         } finally {
             watcher.destroy();

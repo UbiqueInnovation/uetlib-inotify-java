@@ -12,36 +12,37 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: ReadAccessDeniedException.java Project: inotify-java Package: ch.ubique.uetlib.inotify
+ * <p>File: InvalidWatchDescriptorException.java Project: inotify-java Package: ch.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify.exceptions;
+package ch.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code EACCESS} error, indicating read access to a file is not
- * permitted.
+ * Checked exception representing the {@code EINVAL} error, indicating a watch descriptor is
+ * invalid, an event mask is invalid, or a file descriptor is not an inotify file descriptor.
  *
  * @author Nick Bargnesi
  */
-public class ReadAccessDeniedException extends InotifyException {
+public class InvalidWatchDescriptorException extends InotifyException {
 
     /**
-     * Constructs a read access denied exception with {@code null} as its detail message. The cause
-     * is not initialized, and may be subsequently initialized by a call to {@link
+     * Constructs an invalid watch descriptor exception with {@code null} as its detail message. The
+     * cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public ReadAccessDeniedException() {
+    public InvalidWatchDescriptorException() {
         super();
     }
 
     /**
-     * Constructs a read access denied exception with the specified detail message. The cause is not
-     * initialized, and may subsequently be initialized by a call to {@link #initCause(Throwable)}.
+     * Constructs an invalid watch descriptor exception with the specified detail message. The cause
+     * is not initialized, and may subsequently be initialized by a call to {@link
+     * #initCause(Throwable)}.
      *
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public ReadAccessDeniedException(String message) {
+    public InvalidWatchDescriptorException(String message) {
         super(message);
     }
 }
