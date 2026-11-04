@@ -12,15 +12,15 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: Inotify.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
- * Bargnesi
+ * <p>File: Inotify.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
-import ch.ubique.uetlib.inotify.enums.Event;
-import ch.ubique.uetlib.inotify.enums.WatchModifier;
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
-import ch.ubique.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
+import ch.uetlib.inotify.enums.Event;
+import ch.uetlib.inotify.enums.WatchModifier;
+import ch.uetlib.inotify.exceptions.InotifyException;
+import ch.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;

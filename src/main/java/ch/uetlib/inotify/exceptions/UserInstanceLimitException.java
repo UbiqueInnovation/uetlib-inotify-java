@@ -12,36 +12,35 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: UserWatchLimitException.java Project: inotify-java Package: ch.ubique.uetlib.inotify
- * Author: Nick Bargnesi
+ * <p>File: UserInstanceLimitException.java Project: inotify-java Package: ch.uetlib.inotify Author:
+ * Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify.exceptions;
+package ch.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code ENOSPC} error, indicating the user limit on the total
- * number of inotify watches has been reached or the kernel failed to allocate a needed resource.
- *
- * @author Nick Bargnesi
+ * Checked exception representing the {@code EMFILE} error, indicating the limit of inotify
+ * instances has been reached for the user.
  */
-public class UserWatchLimitException extends InotifyException {
+public class UserInstanceLimitException extends InotifyException {
 
     /**
-     * Constructs a user watch limit exception with {@code null} as its detail message. The cause is
-     * not initialized, and may be subsequently initialized by a call to {@link
+     * Constructs a user instance limit exception with {@code null} as its detail message. The cause
+     * is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public UserWatchLimitException() {
+    public UserInstanceLimitException() {
         super();
     }
 
     /**
-     * Constructs a user watch limit exception with the specified detail message. The cause is not
-     * initialized, and may subsequently be initialized by a call to {@link #initCause(Throwable)}.
+     * Constructs a user instance limit exception with the specified detail message. The cause is
+     * not initialized, and may subsequently be initialized by a call to {@link
+     * #initCause(Throwable)}.
      *
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public UserWatchLimitException(String message) {
+    public UserInstanceLimitException(String message) {
         super(message);
     }
 }

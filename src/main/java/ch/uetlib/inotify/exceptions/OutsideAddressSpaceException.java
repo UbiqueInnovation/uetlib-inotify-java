@@ -12,35 +12,37 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: UserInstanceLimitException.java Project: inotify-java Package: ch.ubique.uetlib.inotify
+ * <p>File: OutsideAddressSpaceException.java Project: inotify-java Package: ch.uetlib.inotify
  * Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify.exceptions;
+package ch.uetlib.inotify.exceptions;
 
 /**
- * Checked exception representing the {@code EMFILE} error, indicating the limit of inotify
- * instances has been reached for the user.
+ * Checked exception representing the {@code EFAULT} error, indicating a path points outside the
+ * process' accessible address space.
+ *
+ * @author Nick Bargnesi
  */
-public class UserInstanceLimitException extends InotifyException {
+public class OutsideAddressSpaceException extends InotifyException {
 
     /**
-     * Constructs a user instance limit exception with {@code null} as its detail message. The cause
-     * is not initialized, and may be subsequently initialized by a call to {@link
+     * Constructs an outside address space exception with {@code null} as its detail message. The
+     * cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public UserInstanceLimitException() {
+    public OutsideAddressSpaceException() {
         super();
     }
 
     /**
-     * Constructs a user instance limit exception with the specified detail message. The cause is
+     * Constructs an outside address space exception with the specified detail message. The cause is
      * not initialized, and may subsequently be initialized by a call to {@link
      * #initCause(Throwable)}.
      *
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public UserInstanceLimitException(String message) {
+    public OutsideAddressSpaceException(String message) {
         super(message);
     }
 }

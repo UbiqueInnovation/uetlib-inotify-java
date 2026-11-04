@@ -12,17 +12,21 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: Inotify.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
- * Bargnesi
+ * <p>File: Inotify.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
-import ch.ubique.uetlib.inotify.exceptions.InotifyException;
-import ch.ubique.uetlib.inotify.exceptions.InsufficientKernelMemoryException;
-import ch.ubique.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
-import ch.ubique.uetlib.inotify.exceptions.SystemLimitException;
-import ch.ubique.uetlib.inotify.exceptions.UserInstanceLimitException;
-import ch.ubique.uetlib.inotify.exceptions.UserWatchLimitException;
+import ch.uetlib.inotify.exceptions.InotifyException;
+import ch.uetlib.inotify.exceptions.InsufficientKernelMemoryException;
+import ch.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
+import ch.uetlib.inotify.exceptions.SystemLimitException;
+import ch.uetlib.inotify.exceptions.UserInstanceLimitException;
+import ch.uetlib.inotify.exceptions.UserWatchLimitException;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.InputStream;
@@ -30,9 +34,6 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
  * This class serves as the base class for all Inotify types, providing a bridge to the native
@@ -92,7 +93,7 @@ public abstract class NativeInotify {
     /**
      * Returns {@code true} if the native library has been loaded, {@code false} if not.
      *
-     * <p>This method is {@link ch.ubique.uetlib.inotify.ThreadSafe thread-safe}.
+     * <p>This method is {@link ch.uetlib.inotify.ThreadSafe thread-safe}.
      *
      * @return {@code true} if the native library has been loaded, {@code false} if not
      */
@@ -111,7 +112,7 @@ public abstract class NativeInotify {
      * {@code null} will result in the library being loaded using the library paths provided to the
      * virtual machine.
      *
-     * <p>This method is {@link ch.ubique.uetlib.inotify.ThreadSafe thread-safe}.
+     * <p>This method is {@link ch.uetlib.inotify.ThreadSafe thread-safe}.
      *
      * @param filename The file to load
      * @throws SecurityException Thrown if a security manager is preventing loading of the dyanmic
@@ -222,8 +223,7 @@ public abstract class NativeInotify {
 
     /**
      * Destroys the underlying native instance, thus freeing allocated native resources. This method
-     * is a no-op if the {@link ch.ubique.uetlib.inotify.NativeInotify NativeInotify} object is not
-     * active.
+     * is a no-op if the {@link ch.uetlib.inotify.NativeInotify NativeInotify} object is not active.
      *
      * @see #isActive()
      * @see #isInactive()
@@ -368,7 +368,7 @@ public abstract class NativeInotify {
 
     /**
      * Sets the read and write file descriptors of the IPC pipe associated with this {@link
-     * ch.ubique.uetlib.inotify.NativeInotify NativeInotify} object.
+     * ch.uetlib.inotify.NativeInotify NativeInotify} object.
      *
      * @param readEnd File descriptor of pipe read end
      * @param writeEnd File descriptor of pipe write end

@@ -12,9 +12,9 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: Event.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick Bargnesi
+ * <p>File: Event.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick Bargnesi
  */
-package ch.ubique.uetlib.inotify.enums;
+package ch.uetlib.inotify.enums;
 
 import java.util.ArrayList;
 import java.util.HashMap;

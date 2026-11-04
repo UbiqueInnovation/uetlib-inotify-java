@@ -40,37 +40,37 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *j, void *reserved) {
     if (j->GetEnv((void **) &e, JNI_VERSION_9) != JNI_OK) return JNI_ERR;
 
     /* Classes */
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/exceptions/UserWatchLimitException");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/exceptions/UserWatchLimitException");
     if (!class_inst) goto fail;
     user_watch_limit_exception = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
 
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/exceptions/UserInstanceLimitException");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/exceptions/UserInstanceLimitException");
     if (!class_inst) goto fail;
     user_instance_limit_exception = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
 
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/exceptions/SystemLimitException");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/exceptions/SystemLimitException");
     if (!class_inst) goto fail;
     system_limit_exception = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
 
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/exceptions/InsufficientKernelMemoryException");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/exceptions/InsufficientKernelMemoryException");
     if (!class_inst) goto fail;
     insufficient_kernel_memory_exception = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
 
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/exceptions/InotifyException");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/exceptions/InotifyException");
     if (!class_inst) goto fail;
     inotify_exception = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
 
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/NativeInotify");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/NativeInotify");
     if (!class_inst) goto fail;
     native_inotify = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
 
-    class_inst = (e)->FindClass("ch/ubique/uetlib/inotify/InotifyEvent");
+    class_inst = (e)->FindClass("ch/uetlib/inotify/InotifyEvent");
     if (!class_inst) goto fail;
     inotify_event = (jclass) (e)->NewGlobalRef(class_inst);
     (e)->DeleteLocalRef(class_inst);
@@ -107,7 +107,7 @@ JNIEXPORT void JNI_OnUnload(JavaVM *j, void *reserved) {
 }
 
 /*
- * Function: Java_ch_ubique_uetlib_inotify_NativeInotify_init
+ * Function: Java_ch_uetlib_inotify_NativeInotify_init
  *
  *     Creates a new Inotify object, returning its file descriptor or -1 on
  *     error.
@@ -115,7 +115,7 @@ JNIEXPORT void JNI_OnUnload(JavaVM *j, void *reserved) {
  * Returns:
  *     Inotify object file descriptor or -1 on error
  */
-JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_init(JNIEnv *e, jobject j) {
+JNIEXPORT jint JNICALL Java_ch_uetlib_inotify_NativeInotify_init(JNIEnv *e, jobject j) {
     /* On success, a new file descriptor is returned. */
     int fd = inotify_init();
     /* On error, -1 is returned, and errno is set. */
@@ -163,11 +163,11 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_init(JNIEnv *
 }
 
 /*
- * Function: Java_ch_ubique_uetlib_inotify_NativeInotify_close
+ * Function: Java_ch_uetlib_inotify_NativeInotify_close
  *
  *     Closes the inotify instance.
  */
-JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_close(JNIEnv *e, jobject j, jint fd) {
+JNIEXPORT void JNICALL Java_ch_uetlib_inotify_NativeInotify_close(JNIEnv *e, jobject j, jint fd) {
     jint pw = (e)->CallIntMethod(j, (e)->GetMethodID(native_inotify, "getPipeWrite", "()I"));
     if ((e)->ExceptionCheck()) return;
     /* Close the write end of the pipe. */
@@ -182,7 +182,7 @@ JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_close(JNIEnv 
 }
 
 /*
- * Function: Java_ch_ubique_uetlib_inotify_NativeInotify_add_1watch
+ * Function: Java_ch_uetlib_inotify_NativeInotify_add_1watch
  *
  *     Adds the specified mask/path to the Inotify object associated with the
  *     specified file descriptor.
@@ -195,7 +195,7 @@ JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_close(JNIEnv 
  * Returns:
  *     The watch descriptor or -1 on error
  */
-JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_add_1watch(
+JNIEXPORT jint JNICALL Java_ch_uetlib_inotify_NativeInotify_add_1watch(
         JNIEnv *e, jobject j, jint fd, jstring path, jint mask) {
     const char *path_chars = (e)->GetStringUTFChars(path, NULL);
     int ret = inotify_add_watch(fd, path_chars, mask);
@@ -217,7 +217,7 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_add_1watch(
 }
 
 /*
- * Function: Java_ch_ubique_uetlib_inotify_NativeInotify_rm_1watch
+ * Function: Java_ch_uetlib_inotify_NativeInotify_rm_1watch
  *     Removes the watch associated with the specified watch descriptor.
  *
  * Parameters:
@@ -227,7 +227,7 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_add_1watch(
  * Returns:
  *     Returns 0 or -1 on error
  */
-JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_rm_1watch(
+JNIEXPORT jint JNICALL Java_ch_uetlib_inotify_NativeInotify_rm_1watch(
         JNIEnv *e, jobject j, jint fd, jint wd) {
     int ret = inotify_rm_watch(fd, wd);
     if (ret < 0) {
@@ -239,14 +239,14 @@ JNIEXPORT jint JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_rm_1watch(
 }
 
 /*
- * Function: Java_ch_ubique_uetlib_inotify_NativeInotify_read
+ * Function: Java_ch_uetlib_inotify_NativeInotify_read
  *      Services the queue, returning only on errors or instructed by the Java
  *      object.
  *
  * Parameters:
  *     fd - inotify object file descriptor
  */
-JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_read(
+JNIEXPORT void JNICALL Java_ch_uetlib_inotify_NativeInotify_read(
         JNIEnv *e, jobject j, jint fd) {
     jint in_fd = (e)->CallIntMethod(j, (e)->GetMethodID(native_inotify, "getFileDescriptor", "()I"));
     if ((e)->ExceptionCheck()) return;
@@ -362,7 +362,7 @@ JNIEXPORT void JNICALL Java_ch_ubique_uetlib_inotify_NativeInotify_read(
             rval -= evSize;
 
             /* Send the event off to the Java listener. */
-            (e)->CallVoidMethod(j, (e)->GetMethodID(native_inotify, "eventHandler", "(Lch/ubique/uetlib/inotify/InotifyEvent;)V"), inotifyEvent);
+            (e)->CallVoidMethod(j, (e)->GetMethodID(native_inotify, "eventHandler", "(Lch/uetlib/inotify/InotifyEvent;)V"), inotifyEvent);
             if ((e)->ExceptionCheck()) {
                 debug("exception in eventHandler, returning from read");
                 thrwbl = (e)->ExceptionOccurred();

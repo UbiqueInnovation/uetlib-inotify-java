@@ -12,10 +12,10 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: SystemLimitException.java Project: inotify-java Package: ch.ubique.uetlib.inotify
- * Author: Nick Bargnesi
+ * <p>File: SystemLimitException.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick
+ * Bargnesi
  */
-package ch.ubique.uetlib.inotify.exceptions;
+package ch.uetlib.inotify.exceptions;
 
 /**
  * Checked exception representing the {@code ENFILE} error, indicating the system limit of total

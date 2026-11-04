@@ -12,10 +12,10 @@
  * <p>You should have received a copy of the GNU Lesser General Public License along with
  * inotify-java. If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>File: EventQueueFull.java Project: inotify-java Package: ch.ubique.uetlib.inotify Author: Nick
+ * <p>File: EventQueueFull.java Project: inotify-java Package: ch.uetlib.inotify Author: Nick
  * Bargnesi
  */
-package ch.ubique.uetlib.inotify;
+package ch.uetlib.inotify;
 
 import java.util.EventObject;
 

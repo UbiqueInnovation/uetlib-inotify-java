@@ -48,7 +48,7 @@ Original native error paths and class-reference cleanup deserve a separate revie
 The standalone POM uses current build plugins and Commons IO 2.21.0 instead of
 historical 2.1; reference tests run the original JAR with the dependency versions
 in this POM. The separate package migration changes Java packages, JNI entry points,
-class lookups and descriptors to `ch.ubique.uetlib.inotify`. Reader-thread and
+class lookups and descriptors to `ch.uetlib.inotify`. Reader-thread and
 combined-mask semantics are preserved.
 
 ## Explicit post-reconstruction fixes
@@ -73,7 +73,7 @@ compatibility with older distributions or other CPU architectures.
    the recovered upstream archive.
 2. `1f8c67d`: exact recovered ZIP Java sources plus reconstructed `noglobal` native
    implementation. No Java formatter changes or post-reconstruction fixes.
-3. `23e06f1`: package-only migration to `ch.ubique.uetlib.inotify`, including JNI
+3. `23e06f1`: package-only migration to `ch.uetlib.inotify`, including JNI
    symbols, descriptors and generated-header references.
 4. Build tooling, AOSP formatting and the explicitly listed subsequent fixes.
 
