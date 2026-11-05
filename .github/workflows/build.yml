@@ -1,5 +1,5 @@
 name: Build
-on: [push, pull_request]
+on: [ push, pull_request ]
 permissions:
   contents: read
 jobs:
@@ -17,10 +17,37 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
       - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           distribution: temurin
           java-version: '25'
           cache: maven
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends g++
-      - run: ./scripts/verify-linux.sh
+          overwrite-settings: false
+
+      - name: Create settings.xml
+        if: ${{ github.event_name != 'pull_request' && github.event_name != 'pull_request_target' }}
+        uses: s4u/maven-settings-action@4cfd36368400327fd45dcb28f190ae7b85533deb # v4.1.0
+        with:
+          githubServer: false
+          servers: >-
+            [
+              {
+                "id": "ubique-artifactory-virtual",
+                "username": "${{ secrets.UB_ARTIFACTORY_USER }}",
+                "password": "${{ secrets.UB_ARTIFACTORY_PASSWORD }}"
+              }
+            ]
+          repositories: >-
+            [
+              {
+                "id": "ubique-artifactory-virtual",
+                "url": "${{ secrets.UB_ARTIFACTORY_URL }}${{ secrets.UB_ARTIFACTORY_REPO_UBIQUE }}"
+              }
+            ]
+
+      - name: install g++
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends g++
+
+      - name: Verify Linux
+        run: ./scripts/verify-linux.sh

@@ -1,6 +1,8 @@
 # Changelog
 
-## 3.0.0
+## 3.0.1
+
+- Resolve the shared parent from Artifactory in both Linux verification jobs while Central publication is pending.
 
 - Move Java packages and class references from `ch.ubique.uetlib` to `ch.uetlib`.
 
