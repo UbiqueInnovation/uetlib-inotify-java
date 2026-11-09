@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.2
+
+- Update shared Maven build and publish workflows to v0.2.4.
+
 ## 3.0.1
 
 - Resolve the shared parent from Artifactory in both Linux verification jobs while Central publication is pending.
