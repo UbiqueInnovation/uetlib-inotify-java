@@ -49,7 +49,9 @@ public enum WatchModifier {
             new HashMap<String, WatchModifier>();
 
     static {
-        for (WatchModifier w : values()) STRINGTOENUM.put(w.toString(), w);
+        for (final var w : values()) {
+            STRINGTOENUM.put(w.toString(), w);
+        }
     }
 
     /**
@@ -57,7 +59,7 @@ public enum WatchModifier {
      *
      * @param value integer value
      */
-    WatchModifier(int value) {
+    WatchModifier(final int value) {
         this.value = value;
     }
 
@@ -78,7 +80,7 @@ public enum WatchModifier {
      * @param s Coversion value
      * @return Watch modifier
      */
-    public WatchModifier fromString(String s) {
+    public WatchModifier fromString(final String s) {
         return STRINGTOENUM.get(s);
     }
 
@@ -88,8 +90,12 @@ public enum WatchModifier {
      * @param value Conversion value
      * @return Watch modifier
      */
-    public static WatchModifier fromValue(int value) {
-        for (WatchModifier w : values()) if (w.value == value) return w;
+    public static WatchModifier fromValue(final int value) {
+        for (final var w : values()) {
+            if (w.value == value) {
+                return w;
+            }
+        }
         throw new IllegalArgumentException("bad watch modifier value: " + value);
     }
 
@@ -103,9 +109,8 @@ public enum WatchModifier {
      *     or {@code false}
      * @return {@code true} if {@code mask} is set in {@code e}, {@code false} otherwise
      */
-    public static boolean isSet(WatchModifier m, int mask) {
-        if (m.value == (m.value & mask)) return true;
-        return false;
+    public static boolean isSet(final WatchModifier m, final int mask) {
+        return m.value == (m.value & mask);
     }
 
     /**
@@ -114,10 +119,14 @@ public enum WatchModifier {
      * @param mask Mask to convert
      * @return WatchModifier[]
      */
-    public static WatchModifier[] maskToWatchModifiers(int mask) {
-        List<WatchModifier> mods = new ArrayList<WatchModifier>();
+    public static WatchModifier[] maskToWatchModifiers(final int mask) {
+        final List<WatchModifier> mods = new ArrayList<WatchModifier>();
 
-        for (WatchModifier m : values()) if (m.value == (m.value & mask)) mods.add(m);
+        for (final var m : values()) {
+            if (m.value == (m.value & mask)) {
+                mods.add(m);
+            }
+        }
 
         return mods.toArray(new WatchModifier[0]);
     }
@@ -128,10 +137,12 @@ public enum WatchModifier {
      * @param watchModifiers modifiers to operate on
      * @return mask of provided watch modifiers
      */
-    public static int watchModifiersToMask(WatchModifier... watchModifiers) {
-        int mask = 0;
+    public static int watchModifiersToMask(final WatchModifier... watchModifiers) {
+        var mask = 0;
 
-        for (WatchModifier m : watchModifiers) mask |= m.value;
+        for (final var m : watchModifiers) {
+            mask |= m.value;
+        }
 
         return mask;
     }

@@ -21,15 +21,13 @@ public class RegressionTest {
     @Timeout(10)
     public void toleratesIgnoredEventAfterExplicitWatchRemoval() throws Exception {
         final var directory = Files.createTempDirectory("inotify-remove-");
-        final var watcher = new Inotify();
-        try {
+        try (final var watcher = new Inotify()) {
             final var wd = watcher.addWatch(directory.toString(), Event.Create);
             assertTrue(watcher.removeWatch(wd));
             watcher.eventHandler(
                     new InotifyEvent(wd, ch.uetlib.inotify.enums.EventModifier.Ignored.value(), 0));
             assertNull(watcher.getPath(wd));
         } finally {
-            watcher.destroy();
             Files.deleteIfExists(directory);
         }
     }

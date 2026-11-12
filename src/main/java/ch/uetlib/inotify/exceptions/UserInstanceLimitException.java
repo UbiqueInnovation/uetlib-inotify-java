@@ -28,9 +28,7 @@ public class UserInstanceLimitException extends InotifyException {
      * is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public UserInstanceLimitException() {
-        super();
-    }
+    public UserInstanceLimitException() {}
 
     /**
      * Constructs a user instance limit exception with the specified detail message. The cause is
@@ -40,7 +38,7 @@ public class UserInstanceLimitException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public UserInstanceLimitException(String message) {
+    public UserInstanceLimitException(final String message) {
         super(message);
     }
 }

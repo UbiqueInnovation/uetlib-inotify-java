@@ -30,9 +30,7 @@ public class ReadAccessDeniedException extends InotifyException {
      * is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public ReadAccessDeniedException() {
-        super();
-    }
+    public ReadAccessDeniedException() {}
 
     /**
      * Constructs a read access denied exception with the specified detail message. The cause is not
@@ -41,7 +39,7 @@ public class ReadAccessDeniedException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public ReadAccessDeniedException(String message) {
+    public ReadAccessDeniedException(final String message) {
         super(message);
     }
 }

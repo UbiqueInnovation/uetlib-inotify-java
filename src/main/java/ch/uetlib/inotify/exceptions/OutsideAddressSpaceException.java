@@ -30,9 +30,7 @@ public class OutsideAddressSpaceException extends InotifyException {
      * cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public OutsideAddressSpaceException() {
-        super();
-    }
+    public OutsideAddressSpaceException() {}
 
     /**
      * Constructs an outside address space exception with the specified detail message. The cause is
@@ -42,7 +40,7 @@ public class OutsideAddressSpaceException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public OutsideAddressSpaceException(String message) {
+    public OutsideAddressSpaceException(final String message) {
         super(message);
     }
 }

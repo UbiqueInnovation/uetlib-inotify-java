@@ -27,9 +27,7 @@ public class SystemLimitException extends InotifyException {
      * Constructs a system limit exception with {@code null} as its detail message. The cause is not
      * initialized, and may be subsequently initialized by a call to {@link #initCause(Throwable)}.
      */
-    public SystemLimitException() {
-        super();
-    }
+    public SystemLimitException() {}
 
     /**
      * Constructs a system limit exception with the specified detail message. The cause is not
@@ -38,7 +36,7 @@ public class SystemLimitException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public SystemLimitException(String message) {
+    public SystemLimitException(final String message) {
         super(message);
     }
 }
