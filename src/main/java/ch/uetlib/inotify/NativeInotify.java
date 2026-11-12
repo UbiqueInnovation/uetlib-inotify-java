@@ -29,7 +29,6 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.concurrent.Semaphore;
@@ -125,11 +124,7 @@ public abstract class NativeInotify implements AutoCloseable {
         lock.lock();
         try {
             if (filename == null) {
-                if (System.getProperty("os.arch").contains("64")) {
-                    filename = "libinotify-java-noglobal";
-                } else {
-                    filename = "libinotify-java-noglobal";
-                }
+                filename = "libinotify-java-noglobal";
                 try {
                     loadFromJar(filename); // $NON-NLS-1$
                 } catch (final Exception e) {
@@ -147,7 +142,7 @@ public abstract class NativeInotify implements AutoCloseable {
     /** When packaged into JAR extracts DLLs, places these into */
     private static void loadFromJar(final String fileName) throws Exception {
         // we need to put both DLLs to temp dir
-        final String path = "inotify_" + new Date().getTime();
+        final var path = "inotify_" + new Date().getTime();
         loadLib(path, fileName);
     }
 
@@ -155,9 +150,9 @@ public abstract class NativeInotify implements AutoCloseable {
     private static void loadLib(final String path, String name) throws Exception {
         name = name + ".so";
         // have to use a stream
-        final InputStream in = NativeInotify.class.getResourceAsStream(LIB + name);
+        final var in = NativeInotify.class.getResourceAsStream(LIB + name);
         // always write to different location
-        final File fileOut =
+        final var fileOut =
                 new File(System.getProperty("java.io.tmpdir") + "/" + path + LIB + name);
         final OutputStream out = FileUtils.openOutputStream(fileOut);
         IOUtils.copy(in, out);
@@ -187,7 +182,7 @@ public abstract class NativeInotify implements AutoCloseable {
     @ThreadSafe
     public final boolean isActive() {
         activeSem.acquireUninterruptibly();
-        final boolean active = fdActive;
+        final var active = fdActive;
         activeSem.release();
         return active;
     }
@@ -207,7 +202,7 @@ public abstract class NativeInotify implements AutoCloseable {
     @ThreadSafe
     public final boolean isInactive() {
         activeSem.acquireUninterruptibly();
-        final boolean inactive = !fdActive;
+        final var inactive = !fdActive;
         activeSem.release();
         return inactive;
     }
@@ -239,10 +234,10 @@ public abstract class NativeInotify implements AutoCloseable {
             activeSem.release();
         }
         // remove tmp files
-        final File dir = new File("/tmp/");
+        final var dir = new File("/tmp/");
         final FileFilter filter = WildcardFileFilter.builder().setWildcards("inotify_*").get();
-        final File[] dirs = dir.listFiles(filter);
-        for (final File tmpDir : dirs) {
+        final var dirs = dir.listFiles(filter);
+        for (final var tmpDir : dirs) {
             try {
                 FileUtils.deleteDirectory(tmpDir);
             } catch (final Exception e) {
