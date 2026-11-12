@@ -2,8 +2,8 @@
 
 Linux inotify JNI bindings, derived from Nick Bargnesi's inotify-java and the
 recovered Ubique `ch.ubique:inotify:2.0` project. Java packages are
-`ch.uetlib.inotify` (including matching JNI bindings). This library is
-**LGPL-3.0-or-later**, including its native implementation; see LICENSE, COPYING and COPYING.LESSER.
+`ch.uetlib.inotify` (including matching JNI bindings). This library is **LGPL-3.0-or-later**, including its native
+implementation; see LICENSE, COPYING and COPYING.LESSER.
 
 Development coordinate: `ch.uetlib:uetlib-inotify-java:3.0.0-SNAPSHOT`.
 Nothing has been published. The native reconstruction is not claimed to be a
@@ -33,8 +33,9 @@ No historical precompiled native binary is checked in.
 Build on the target Linux architecture; the build currently includes one native
 architecture per JAR, not a cross-platform distribution. No Windows/macOS support.
 
-Always call `destroy()` when finished: recovered code uses non-daemon reader
-threads. This initial reconstruction retains historical behavior; additional
+Always call `close()` (or `destroy()`) when finished, e.g. with try-with-resources:
+recovered code uses non-daemon reader threads, so instances are never garbage-collected
+while active. This initial reconstruction retains historical behavior; additional
 resource/error-path hardening should be reviewed separately.
 
 ## Changes and provenance
