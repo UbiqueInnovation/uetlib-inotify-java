@@ -33,4 +33,5 @@ javac --release 25 -cp "$REFERENCE_JAR:$(cat target/test-classpath.txt)" \
     -d target/reference-test-classes target/reference-test-src/NativeIntegrationTest.java
 java -Xcheck:jni -Djava.library.path="${NATIVE_LIBRARY_PATH:-$PWD/target/reference-native}" \
     -cp "$REFERENCE_JAR:target/reference-test-classes:$(cat target/test-classpath.txt)" \
-    org.junit.runner.JUnitCore com.den_4.inotify_java.NativeIntegrationTest
+    org.junit.platform.console.ConsoleLauncher execute --fail-if-no-tests \
+    --select-class=com.den_4.inotify_java.NativeIntegrationTest
