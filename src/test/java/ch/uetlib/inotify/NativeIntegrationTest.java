@@ -106,6 +106,16 @@ public class NativeIntegrationTest {
     }
 
     @Test
+    public void closeDestroysInstance() throws Exception {
+        final Inotify closed;
+        try (final var watcher = new Inotify()) {
+            closed = watcher;
+            assertTrue(watcher.isActive());
+        }
+        assertTrue(closed.isInactive());
+    }
+
+    @Test
     public void recognizesRecoveredCombinedEventMasks() {
         assertTrue(Event.isSet(Event.Close, Event.Close_Write.value()));
         assertTrue(Event.isSet(Event.Close, Event.Close_No_Write.value()));

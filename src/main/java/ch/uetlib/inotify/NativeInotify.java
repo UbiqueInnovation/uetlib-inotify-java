@@ -42,7 +42,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since Version 2
  * @author Nick Bargnesi
  */
-public abstract class NativeInotify {
+public abstract class NativeInotify implements AutoCloseable {
 
     /** Watch descriptor associated with this inotify instance. */
     protected int fileDescriptor;
@@ -168,7 +168,7 @@ public abstract class NativeInotify {
 
     /** Invokes {@link #destroy()}. */
     @Override
-    protected void finalize() throws Throwable {
+    public void close() {
         destroy();
     }
 

@@ -3,6 +3,10 @@
 ## 3.0.3
 
 - Use shared Maven build and publish workflows at `v1.0.0` to enforce formatting checks in CI.
+- Make `NativeInotify` `AutoCloseable`; `close()` invokes `destroy()`. Remove the
+  deprecated `finalize()`, which could not run while reader threads held the instance.
+- Build the native library and run tests only on Linux; other platforms only compile.
+- Migrate tests to JUnit Jupiter.
 
 ## 3.0.2
 
