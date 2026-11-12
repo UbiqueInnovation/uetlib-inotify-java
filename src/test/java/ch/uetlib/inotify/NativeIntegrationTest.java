@@ -23,11 +23,10 @@ public class NativeIntegrationTest {
 
     @Test
     @Timeout(15)
-    public void deliversCreateCloseMoveDeleteAndIgnoredEvents() throws Exception {
+    void deliversCreateCloseMoveDeleteAndIgnoredEvents() throws Exception {
         final var directory = Files.createTempDirectory("inotify-test-");
-        final var watcher = new Inotify();
         final var events = new LinkedBlockingQueue<InotifyEvent>();
-        try {
+        try (final var watcher = new Inotify()) {
             final var wd =
                     watcher.addWatch(
                             directory.toString(),
@@ -61,7 +60,6 @@ public class NativeIntegrationTest {
             Files.delete(directory);
             await(events, null, null);
         } finally {
-            watcher.destroy();
             Files.deleteIfExists(directory.resolve("first.txt"));
             Files.deleteIfExists(directory.resolve("second.txt"));
             Files.deleteIfExists(directory);
@@ -70,11 +68,14 @@ public class NativeIntegrationTest {
 
     @Test
     @Timeout(15)
-    public void closesReaderThreadsAcrossRepeatedInstances() throws Exception {
+    void closesReaderThreadsAcrossRepeatedInstances() throws Exception {
         for (var i = 0; i < 20; i++) {
-            final var watcher = new Inotify();
-            final var name = "ConcurrentReader:" + watcher.getFileDescriptor();
-            watcher.destroy();
+            final String name;
+            final Inotify closed;
+            try (final var watcher = new Inotify()) {
+                name = "ConcurrentReader:" + watcher.getFileDescriptor();
+                closed = watcher;
+            }
             final var reader =
                     Thread.getAllStackTraces().keySet().stream()
                             .filter(t -> t.getName().equals(name))
@@ -84,14 +85,13 @@ public class NativeIntegrationTest {
                 reader.join(2000);
                 assertFalse(reader.isAlive());
             }
-            assertTrue(watcher.isInactive());
+            assertTrue(closed.isInactive());
         }
     }
 
     @Test
-    public void rejectsMissingWatchPath() throws Exception {
-        final var watcher = new Inotify();
-        try {
+    void rejectsMissingWatchPath() throws Exception {
+        try (final var watcher = new Inotify()) {
             final var expected =
                     assertThrows(
                             InotifyException.class,
@@ -100,13 +100,11 @@ public class NativeIntegrationTest {
                                             "/nonexistent-inotify-" + java.util.UUID.randomUUID(),
                                             Event.Create));
             assertNotNull(expected.getMessage());
-        } finally {
-            watcher.destroy();
         }
     }
 
     @Test
-    public void closeDestroysInstance() throws Exception {
+    void closeDestroysInstance() throws Exception {
         final Inotify closed;
         try (final var watcher = new Inotify()) {
             closed = watcher;
@@ -116,7 +114,7 @@ public class NativeIntegrationTest {
     }
 
     @Test
-    public void recognizesRecoveredCombinedEventMasks() {
+    void recognizesRecoveredCombinedEventMasks() {
         assertTrue(Event.isSet(Event.Close, Event.Close_Write.value()));
         assertTrue(Event.isSet(Event.Close, Event.Close_No_Write.value()));
         assertTrue(Event.isSet(Event.Moved, Event.Moved_From.value()));

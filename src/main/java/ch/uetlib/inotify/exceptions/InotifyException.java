@@ -28,9 +28,7 @@ public class InotifyException extends Exception {
      * Constructs an inotify-java exception, with {@code null} as its message. The cause is not
      * initialized, and may be subsequently initialized by a call to {@link #initCause(Throwable)}.
      */
-    public InotifyException() {
-        super();
-    }
+    public InotifyException() {}
 
     /**
      * Constructs an inotify-java exception, with the specified message. The cause is not
@@ -39,7 +37,7 @@ public class InotifyException extends Exception {
      * @param message the detail message, saved for later retrieval by the {@link #getMessage()}
      *     method
      */
-    public InotifyException(String message) {
+    public InotifyException(final String message) {
         super(message);
     }
 
@@ -52,7 +50,7 @@ public class InotifyException extends Exception {
      * @param cause the {@link java.lang.Throwable throwable} indicating the cause of the exception
      *     ({@code null} values are permitted
      */
-    public InotifyException(String message, Throwable cause) {
+    public InotifyException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -63,7 +61,7 @@ public class InotifyException extends Exception {
      * @param cause the {@link java.lang.Throwable throwable} indicating the cause of the exception
      *     ({@code null} values are permitted
      */
-    public InotifyException(Throwable cause) {
+    public InotifyException(final Throwable cause) {
         super(cause);
     }
 }

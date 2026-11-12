@@ -107,10 +107,12 @@ public enum Event {
     /** Unique value associated with each enumeration. */
     private final int value;
 
-    private static final Map<String, Event> STRINGTOENUM = new HashMap<String, Event>();
+    private static final Map<String, Event> STRINGTOENUM = new HashMap<>();
 
     static {
-        for (Event e : values()) STRINGTOENUM.put(e.toString(), e);
+        for (final var e : values()) {
+            STRINGTOENUM.put(e.toString(), e);
+        }
     }
 
     /**
@@ -118,7 +120,7 @@ public enum Event {
      *
      * @param value integer value
      */
-    Event(int value) {
+    Event(final int value) {
         this.value = value;
     }
 
@@ -138,7 +140,7 @@ public enum Event {
      * @param s Conversion value
      * @return event
      */
-    public Event fromString(String s) {
+    public Event fromString(final String s) {
         return STRINGTOENUM.get(s);
     }
 
@@ -166,9 +168,8 @@ public enum Event {
      * @return {@code true} if event {@code e} is a directory event, {@code false} otherwise
      * @since Version 2
      */
-    public static boolean isDirectoryEvent(Event e) {
-        if (e == Move_Self || e == Delete_Self) return false;
-        return true;
+    public static boolean isDirectoryEvent(final Event e) {
+        return e != Move_Self && e != Delete_Self;
     }
 
     /**
@@ -177,8 +178,12 @@ public enum Event {
      * @param value Conversion value
      * @return Event
      */
-    public static Event fromValue(int value) {
-        for (Event e : values()) if (e.value == value) return e;
+    public static Event fromValue(final int value) {
+        for (final var e : values()) {
+            if (e.value == value) {
+                return e;
+            }
+        }
         throw new IllegalArgumentException("bad event value: " + value);
     }
 
@@ -191,14 +196,24 @@ public enum Event {
      *     or {@code false}
      * @return {@code true} if {@code mask} is set in {@code e}, {@code false} otherwise
      */
-    public static boolean isSet(Event e, int mask) {
-        if (e.value == (e.value & mask)) return true;
-        if (e.value == Close.value)
-            if (Close_No_Write.value == (Close_No_Write.value & mask)) return true;
-            else if (Close_Write.value == (Close_Write.value & mask)) return true;
-        if (e.value == Moved.value)
-            if (Moved_From.value == (Moved_From.value & mask)) return true;
-            else if (Moved_To.value == (Moved_To.value & mask)) return true;
+    public static boolean isSet(final Event e, final int mask) {
+        if (e.value == (e.value & mask)) {
+            return true;
+        }
+        if (e.value == Close.value) {
+            if (Close_No_Write.value == (Close_No_Write.value & mask)) {
+                return true;
+            } else if (Close_Write.value == (Close_Write.value & mask)) {
+                return true;
+            }
+        }
+        if (e.value == Moved.value) {
+            if (Moved_From.value == (Moved_From.value & mask)) {
+                return true;
+            } else {
+                return Moved_To.value == (Moved_To.value & mask);
+            }
+        }
         return false;
     }
 
@@ -208,10 +223,14 @@ public enum Event {
      * @param mask Mask to convert
      * @return Event[]
      */
-    public static Event[] maskToEvents(int mask) {
-        List<Event> evs = new ArrayList<Event>();
+    public static Event[] maskToEvents(final int mask) {
+        final List<Event> evs = new ArrayList<>();
 
-        for (Event e : values()) if (e.value == (e.value & mask)) evs.add(e);
+        for (final var e : values()) {
+            if (e.value == (e.value & mask)) {
+                evs.add(e);
+            }
+        }
 
         return evs.toArray(new Event[0]);
     }
@@ -222,10 +241,12 @@ public enum Event {
      * @param events to operate on
      * @return mask of provided events
      */
-    public static int eventsToMask(Event... events) {
-        int mask = 0;
+    public static int eventsToMask(final Event... events) {
+        var mask = 0;
 
-        for (Event e : events) mask |= e.value;
+        for (final var e : events) {
+            mask |= e.value;
+        }
 
         return mask;
     }

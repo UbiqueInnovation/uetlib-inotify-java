@@ -334,7 +334,7 @@ public final class MonitorService extends NativeInotify {
         if (lastArrivalTime == 0L) {
             return null;
         }
-        final Calendar ret = Calendar.getInstance(locale);
+        final var ret = Calendar.getInstance(locale);
         ret.setTimeInMillis(lastArrivalTime);
         return ret.getTime();
     }
@@ -391,11 +391,11 @@ public final class MonitorService extends NativeInotify {
     @Override
     void eventHandler(final InotifyEvent e) {
 
-        final long now = currentTimeMillis();
+        final var now = currentTimeMillis();
         if (lastArrivalTime == 0.0d) {
             lastArrivalTime = now;
         } else {
-            final long delta = now - lastArrivalTime;
+            final var delta = now - lastArrivalTime;
             if (minInterarrivalTime == 0.0d || delta < minInterarrivalTime) {
                 minInterarrivalTime = delta;
             }
@@ -407,23 +407,22 @@ public final class MonitorService extends NativeInotify {
 
         if (queue.offer(e)) {
             serviced++;
-            final int size = queue.size();
+            final var size = queue.size();
             if (size > largestQueueSize) {
                 largestQueueSize = size;
             }
             return;
         }
 
-        final InotifyEvent ev =
-                new InotifyEvent(e.getSource(), EventModifier.Event_Queue_Overflow.value());
+        final var ev = new InotifyEvent(e.getSource(), EventModifier.Event_Queue_Overflow.value());
         final int wd = e.getSource();
-        final Set<InotifyEventListener> queue = watchListenerMap.get(wd);
+        final var queue = watchListenerMap.get(wd);
         if (queue != null) {
-            for (final InotifyEventListener l : queue) {
-                final long t1 = currentTimeMillis();
+            for (final var l : queue) {
+                final var t1 = currentTimeMillis();
                 l.filesystemEventOccurred(ev);
-                final long t2 = currentTimeMillis();
-                final long delta = (t2 - t1);
+                final var t2 = currentTimeMillis();
+                final var delta = (t2 - t1);
                 if (minServiceTime == 0.0d || delta < minServiceTime) {
                     minServiceTime = delta;
                 }
@@ -456,7 +455,7 @@ public final class MonitorService extends NativeInotify {
         if (path == null) {
             return -1;
         }
-        final Integer wd = pathWatchMap.get(path);
+        final var wd = pathWatchMap.get(path);
         if (wd == null) {
             return -1;
         }
@@ -480,7 +479,7 @@ public final class MonitorService extends NativeInotify {
             throw new IllegalArgumentException("invalid watch descriptor");
         }
 
-        Set<InotifyEventListener> val =
+        var val =
                 watchListenerMap.computeIfAbsent(
                         watchDescriptor, k -> new CopyOnWriteArraySet<InotifyEventListener>());
         val.add(listener);
@@ -504,12 +503,12 @@ public final class MonitorService extends NativeInotify {
         if (!watchListenerMap.containsKey(watchDescriptor)) {
             throw new IllegalArgumentException("invalid watch descriptor");
         }
-        final Set<InotifyEventListener> val = watchListenerMap.get(watchDescriptor);
+        final var val = watchListenerMap.get(watchDescriptor);
         if (val == null) {
             return false;
         }
 
-        final boolean ret = val.remove(listener);
+        final var ret = val.remove(listener);
         if (val.isEmpty()) {
             watchListenerMap.remove(watchDescriptor);
         }
@@ -531,8 +530,8 @@ public final class MonitorService extends NativeInotify {
             throw new NullPointerException("path may not be null");
         }
 
-        int wm_mask = 0;
-        final int ev_mask = Event.eventsToMask(events);
+        var wm_mask = 0;
+        final var ev_mask = Event.eventsToMask(events);
         if (pathWatchMap.containsKey(path)) {
             wm_mask |= WatchModifier.Add.value();
         }
@@ -558,8 +557,8 @@ public final class MonitorService extends NativeInotify {
             throw new NullPointerException("path may not be null");
         }
 
-        final int wm_mask = WatchModifier.watchModifiersToMask(watchModifiers);
-        final int ev_mask = Event.eventsToMask(events);
+        final var wm_mask = WatchModifier.watchModifiersToMask(watchModifiers);
+        final var ev_mask = Event.eventsToMask(events);
 
         return add_watch(path, wm_mask, ev_mask);
     }
@@ -596,7 +595,7 @@ public final class MonitorService extends NativeInotify {
      */
     private int add_watch(final String path, final int wm_mask, final int ev_mask)
             throws InotifyException {
-        final int wd = addWatch(path, wm_mask | ev_mask);
+        final var wd = addWatch(path, wm_mask | ev_mask);
         pathWatchMap.put(path, wd);
         watchPathMap.put(wd, path);
         return wd;
@@ -621,7 +620,7 @@ public final class MonitorService extends NativeInotify {
      * @return {@code true} if a watch was removed, {@code false} otherwise
      */
     private boolean remove_watch(final int wd) throws InvalidWatchDescriptorException {
-        final String path = watchPathMap.get(wd);
+        final var path = watchPathMap.get(wd);
         watchPathMap.remove(wd);
         pathWatchMap.remove(path);
         watchListenerMap.remove(wd);
@@ -682,7 +681,7 @@ public final class MonitorService extends NativeInotify {
         public void run() {
             while (isActive()) {
                 try {
-                    final InotifyEvent e = queue.take();
+                    final var e = queue.take();
                     String path = null;
                     if (e.getName() != null) {
                         path = watchPathMap.get(e.getSource());
@@ -696,13 +695,13 @@ public final class MonitorService extends NativeInotify {
                     }
 
                     final int wd = e.getSource();
-                    final Set<InotifyEventListener> queue = watchListenerMap.get(wd);
+                    final var queue = watchListenerMap.get(wd);
                     if (queue != null) {
-                        for (final InotifyEventListener l : queue) {
-                            final long t1 = currentTimeMillis();
+                        for (final var l : queue) {
+                            final var t1 = currentTimeMillis();
                             l.filesystemEventOccurred(e);
-                            final long t2 = currentTimeMillis();
-                            final long delta = (t2 - t1);
+                            final var t2 = currentTimeMillis();
+                            final var delta = (t2 - t1);
                             if (minServiceTime == 0.0d || delta < minServiceTime) {
                                 minServiceTime = delta;
                             }
