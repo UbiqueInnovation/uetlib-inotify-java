@@ -17,5 +17,6 @@ done
 [[ ${#jars[@]} -eq 1 ]] || { echo 'Expected one packaged library JAR' >&2; exit 1; }
 java -Xcheck:jni -Dinotify.test.bundled=true -Djava.library.path=/nonexistent \
     -cp "${jars[0]}:target/test-classes:$(cat target/test-classpath.txt)" \
-    org.junit.runner.JUnitCore ch.uetlib.inotify.NativeIntegrationTest \
-    ch.uetlib.inotify.RegressionTest
+    org.junit.platform.console.ConsoleLauncher execute --fail-if-no-tests \
+    --select-class=ch.uetlib.inotify.NativeIntegrationTest \
+    --select-class=ch.uetlib.inotify.RegressionTest
