@@ -1,33 +1,33 @@
 package ch.uetlib.inotify;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.uetlib.inotify.enums.Event;
 import ch.uetlib.inotify.exceptions.InotifyException;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class NativeIntegrationTest {
-    @BeforeClass
+    @BeforeAll
     public static void loadNativeLibrary() throws InotifyException {
         if (!Boolean.getBoolean("inotify.test.bundled")) {
             NativeInotify.loadLibrary("inotify-java-noglobal");
         }
     }
 
-    @Test(timeout = 15000)
-    public void deliversCreateCloseMoveDeleteAndIgnoredEvents() throws Exception {
-        Path directory = Files.createTempDirectory("inotify-test-");
-        Inotify watcher = new Inotify();
-        LinkedBlockingQueue<InotifyEvent> events = new LinkedBlockingQueue<>();
-        try {
-            int wd =
+    @Test
+    @Timeout(15)
+    void deliversCreateCloseMoveDeleteAndIgnoredEvents() throws Exception {
+        final var directory = Files.createTempDirectory("inotify-test-");
+        final var events = new LinkedBlockingQueue<InotifyEvent>();
+        try (final var watcher = new Inotify()) {
+            final var wd =
                     watcher.addWatch(
                             directory.toString(),
                             Event.Create,
@@ -38,42 +38,45 @@ public class NativeIntegrationTest {
             watcher.addListener(
                     wd,
                     new InotifyEventListener() {
-                        public void filesystemEventOccurred(InotifyEvent event) {
+                        public void filesystemEventOccurred(final InotifyEvent event) {
                             events.add(event);
                         }
 
-                        public void queueFull(EventQueueFull event) {
+                        public void queueFull(final EventQueueFull event) {
                             fail("Unexpected overflow");
                         }
                     });
-            Path first = directory.resolve("first.txt");
-            Path second = directory.resolve("second.txt");
+            final var first = directory.resolve("first.txt");
+            final var second = directory.resolve("second.txt");
             Files.writeString(first, "hello");
             await(events, Event.Create, "first.txt");
             await(events, Event.Close_Write, "first.txt");
             Files.move(first, second);
-            InotifyEvent from = await(events, Event.Moved_From, "first.txt");
-            InotifyEvent to = await(events, Event.Moved_To, "second.txt");
+            final var from = await(events, Event.Moved_From, "first.txt");
+            final var to = await(events, Event.Moved_To, "second.txt");
             assertEquals(from.getCookie(), to.getCookie());
             Files.delete(second);
             await(events, Event.Delete, "second.txt");
             Files.delete(directory);
             await(events, null, null);
         } finally {
-            watcher.destroy();
             Files.deleteIfExists(directory.resolve("first.txt"));
             Files.deleteIfExists(directory.resolve("second.txt"));
             Files.deleteIfExists(directory);
         }
     }
 
-    @Test(timeout = 15000)
-    public void closesReaderThreadsAcrossRepeatedInstances() throws Exception {
-        for (int i = 0; i < 20; i++) {
-            Inotify watcher = new Inotify();
-            String name = "ConcurrentReader:" + watcher.getFileDescriptor();
-            watcher.destroy();
-            Thread reader =
+    @Test
+    @Timeout(15)
+    void closesReaderThreadsAcrossRepeatedInstances() throws Exception {
+        for (var i = 0; i < 20; i++) {
+            final String name;
+            final Inotify closed;
+            try (final var watcher = new Inotify()) {
+                name = "ConcurrentReader:" + watcher.getFileDescriptor();
+                closed = watcher;
+            }
+            final var reader =
                     Thread.getAllStackTraces().keySet().stream()
                             .filter(t -> t.getName().equals(name))
                             .findFirst()
@@ -82,25 +85,36 @@ public class NativeIntegrationTest {
                 reader.join(2000);
                 assertFalse(reader.isAlive());
             }
-            assertTrue(watcher.isInactive());
+            assertTrue(closed.isInactive());
         }
     }
 
     @Test
-    public void rejectsMissingWatchPath() throws Exception {
-        Inotify watcher = new Inotify();
-        try {
-            watcher.addWatch("/nonexistent-inotify-" + java.util.UUID.randomUUID(), Event.Create);
-            fail("Expected missing-path error");
-        } catch (InotifyException expected) {
+    void rejectsMissingWatchPath() throws Exception {
+        try (final var watcher = new Inotify()) {
+            final var expected =
+                    assertThrows(
+                            InotifyException.class,
+                            () ->
+                                    watcher.addWatch(
+                                            "/nonexistent-inotify-" + java.util.UUID.randomUUID(),
+                                            Event.Create));
             assertNotNull(expected.getMessage());
-        } finally {
-            watcher.destroy();
         }
     }
 
     @Test
-    public void recognizesRecoveredCombinedEventMasks() {
+    void closeDestroysInstance() throws Exception {
+        final Inotify closed;
+        try (final var watcher = new Inotify()) {
+            closed = watcher;
+            assertTrue(watcher.isActive());
+        }
+        assertTrue(closed.isInactive());
+    }
+
+    @Test
+    void recognizesRecoveredCombinedEventMasks() {
         assertTrue(Event.isSet(Event.Close, Event.Close_Write.value()));
         assertTrue(Event.isSet(Event.Close, Event.Close_No_Write.value()));
         assertTrue(Event.isSet(Event.Moved, Event.Moved_From.value()));
@@ -108,11 +122,11 @@ public class NativeIntegrationTest {
     }
 
     private static InotifyEvent await(
-            LinkedBlockingQueue<InotifyEvent> events, Event expected, String name)
+            final LinkedBlockingQueue<InotifyEvent> events, final Event expected, final String name)
             throws Exception {
-        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(3);
+        final var deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(3);
         while (System.nanoTime() < deadline) {
-            InotifyEvent event = events.poll(100, TimeUnit.MILLISECONDS);
+            final var event = events.poll(100, TimeUnit.MILLISECONDS);
             if (event != null
                     && (expected == null
                             ? event.isIgnored()

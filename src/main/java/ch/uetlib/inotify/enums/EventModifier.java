@@ -44,11 +44,12 @@ public enum EventModifier {
     /** Unique value associated with each enumeration. */
     private final int value;
 
-    private static final Map<String, EventModifier> STRINGTOENUM =
-            new HashMap<String, EventModifier>();
+    private static final Map<String, EventModifier> STRINGTOENUM = new HashMap<>();
 
     static {
-        for (EventModifier e : values()) STRINGTOENUM.put(e.toString(), e);
+        for (final var e : values()) {
+            STRINGTOENUM.put(e.toString(), e);
+        }
     }
 
     /**
@@ -56,7 +57,7 @@ public enum EventModifier {
      *
      * @param value integer value
      */
-    EventModifier(int value) {
+    EventModifier(final int value) {
         this.value = value;
     }
 
@@ -77,7 +78,7 @@ public enum EventModifier {
      * @param s Conversion value
      * @return event modifier
      */
-    public EventModifier fromString(String s) {
+    public EventModifier fromString(final String s) {
         return STRINGTOENUM.get(s);
     }
 
@@ -87,8 +88,12 @@ public enum EventModifier {
      * @param value Conversion value
      * @return event modifier
      */
-    public static EventModifier fromValue(int value) {
-        for (EventModifier e : values()) if (e.value == value) return e;
+    public static EventModifier fromValue(final int value) {
+        for (final var e : values()) {
+            if (e.value == value) {
+                return e;
+            }
+        }
         throw new IllegalArgumentException("bad event modifier value: " + value);
     }
 
@@ -102,9 +107,8 @@ public enum EventModifier {
      *     or {@code false}
      * @return {@code true} if {@code mask} is set in {@code e}, {@code false} otherwise
      */
-    public static boolean isSet(EventModifier m, int mask) {
-        if (m.value == (m.value & mask)) return true;
-        return false;
+    public static boolean isSet(final EventModifier m, final int mask) {
+        return m.value == (m.value & mask);
     }
 
     /**
@@ -113,10 +117,14 @@ public enum EventModifier {
      * @param mask Mask to convert
      * @return EventModifier[]
      */
-    public static EventModifier[] maskToEventModifiers(int mask) {
-        List<EventModifier> mods = new ArrayList<EventModifier>();
+    public static EventModifier[] maskToEventModifiers(final int mask) {
+        final List<EventModifier> mods = new ArrayList<>();
 
-        for (EventModifier m : values()) if (m.value == (m.value & mask)) mods.add(m);
+        for (final var m : values()) {
+            if (m.value == (m.value & mask)) {
+                mods.add(m);
+            }
+        }
 
         return mods.toArray(new EventModifier[0]);
     }
@@ -127,10 +135,12 @@ public enum EventModifier {
      * @param eventModifiers modifiers to operate on
      * @return mask of provided event modifiers
      */
-    public static int eventModifiersToMask(EventModifier... eventModifiers) {
-        int mask = 0;
+    public static int eventModifiersToMask(final EventModifier... eventModifiers) {
+        var mask = 0;
 
-        for (EventModifier m : eventModifiers) mask |= m.value;
+        for (final var m : eventModifiers) {
+            mask |= m.value;
+        }
 
         return mask;
     }

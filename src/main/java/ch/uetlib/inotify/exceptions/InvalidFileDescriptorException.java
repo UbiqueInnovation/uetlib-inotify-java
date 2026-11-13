@@ -29,9 +29,7 @@ public class InvalidFileDescriptorException extends InotifyException {
      * cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public InvalidFileDescriptorException() {
-        super();
-    }
+    public InvalidFileDescriptorException() {}
 
     /**
      * Constructs an invalid file descriptor exception with the specified detail message. The cause
@@ -41,7 +39,7 @@ public class InvalidFileDescriptorException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public InvalidFileDescriptorException(String message) {
+    public InvalidFileDescriptorException(final String message) {
         super(message);
     }
 }

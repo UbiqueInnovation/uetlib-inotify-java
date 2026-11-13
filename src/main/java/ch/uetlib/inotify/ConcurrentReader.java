@@ -18,6 +18,7 @@ package ch.uetlib.inotify;
 
 import ch.uetlib.inotify.exceptions.InotifyException;
 
+import java.lang.System.Logger.Level;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
@@ -31,24 +32,17 @@ import java.lang.Thread.UncaughtExceptionHandler;
  */
 public abstract class ConcurrentReader extends NativeInotify implements UncaughtExceptionHandler {
 
+    private static final System.Logger LOGGER = System.getLogger(ConcurrentReader.class.getName());
+
     /**
      * Constructs a concurrent reader.
      *
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
      */
-    public ConcurrentReader() throws InotifyException {
-        super();
-        final Thread reader =
-                new Thread(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                read();
-                            }
-                        },
-                        "ConcurrentReader:" + fileDescriptor); // $NON-NLS-1$
+    protected ConcurrentReader() throws InotifyException {
+        final var reader =
+                new Thread(this::read, "ConcurrentReader:" + fileDescriptor); // $NON-NLS-1$
 
         // Thread lives only to serve user threads; thread can be daemonized.
         reader.setDaemon(false);
@@ -58,14 +52,15 @@ public abstract class ConcurrentReader extends NativeInotify implements Uncaught
 
     /**
      * Method invoked when the anonymous runnable terminates due to the uncaught exception {@code
-     * e}. This handler destroys the Inotify instance.
+     * e}. This handler logs the exception and destroys the Inotify instance.
      *
      * @param t Terminating thread
      * @param e Uncaught exception
      */
     @Override
     public void uncaughtException(final Thread t, final Throwable e) {
-        e.printStackTrace();
+        LOGGER.log(
+                Level.ERROR, "Inotify reader " + t.getName() + " failed; destroying instance", e);
         destroy();
     }
 }

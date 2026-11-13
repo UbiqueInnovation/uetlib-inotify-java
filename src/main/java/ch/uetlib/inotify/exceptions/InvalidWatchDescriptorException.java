@@ -30,9 +30,7 @@ public class InvalidWatchDescriptorException extends InotifyException {
      * cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public InvalidWatchDescriptorException() {
-        super();
-    }
+    public InvalidWatchDescriptorException() {}
 
     /**
      * Constructs an invalid watch descriptor exception with the specified detail message. The cause
@@ -42,7 +40,7 @@ public class InvalidWatchDescriptorException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public InvalidWatchDescriptorException(String message) {
+    public InvalidWatchDescriptorException(final String message) {
         super(message);
     }
 }

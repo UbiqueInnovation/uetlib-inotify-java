@@ -31,7 +31,7 @@ public class EventQueueFull extends EventObject {
      *
      * @param fileDescriptor The file descriptor associated with an inotify event queue.
      */
-    public EventQueueFull(int fileDescriptor) {
+    public EventQueueFull(final int fileDescriptor) {
         super(fileDescriptor);
     }
 }

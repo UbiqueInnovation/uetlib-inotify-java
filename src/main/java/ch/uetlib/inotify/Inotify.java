@@ -65,9 +65,9 @@ public class Inotify extends ConcurrentReader {
      *     provided to the thrown object.
      */
     public Inotify() throws InotifyException {
-        watchPathMap = new TreeMap<Integer, String>();
-        pathWatchMap = new TreeMap<String, Integer>();
-        watchListenerMap = new TreeMap<Integer, Set<InotifyEventListener>>();
+        watchPathMap = new TreeMap<>();
+        pathWatchMap = new TreeMap<>();
+        watchListenerMap = new TreeMap<>();
     }
 
     /**
@@ -91,9 +91,9 @@ public class Inotify extends ConcurrentReader {
         }
 
         final int wd = e.getSource();
-        final Set<InotifyEventListener> queue = watchListenerMap.get(wd);
+        final var queue = watchListenerMap.get(wd);
         if (queue != null) {
-            for (final InotifyEventListener l : queue) {
+            for (final var l : queue) {
                 l.filesystemEventOccurred(e);
             }
         }
@@ -132,7 +132,7 @@ public class Inotify extends ConcurrentReader {
         if (path == null) {
             return -1;
         }
-        final Integer wd = pathWatchMap.get(path);
+        final var wd = pathWatchMap.get(path);
         if (wd == null) {
             return -1;
         }
@@ -156,9 +156,8 @@ public class Inotify extends ConcurrentReader {
             throw new IllegalArgumentException("invalid watch descriptor");
         }
 
-        Set<InotifyEventListener> val =
-                watchListenerMap.computeIfAbsent(
-                        watchDescriptor, k -> new CopyOnWriteArraySet<InotifyEventListener>());
+        var val =
+                watchListenerMap.computeIfAbsent(watchDescriptor, k -> new CopyOnWriteArraySet<>());
         val.add(listener);
     }
 
@@ -181,12 +180,12 @@ public class Inotify extends ConcurrentReader {
             throw new IllegalArgumentException("invalid watch descriptor");
         }
 
-        final Set<InotifyEventListener> val = watchListenerMap.get(watchDescriptor);
+        final var val = watchListenerMap.get(watchDescriptor);
         if (val == null) {
             return false;
         }
 
-        final boolean ret = val.remove(listener);
+        final var ret = val.remove(listener);
         if (val.isEmpty()) {
             watchListenerMap.remove(watchDescriptor);
         }
@@ -208,8 +207,8 @@ public class Inotify extends ConcurrentReader {
             throw new NullPointerException("path may not be null");
         }
 
-        int wm_mask = 0;
-        final int ev_mask = Event.eventsToMask(events);
+        var wm_mask = 0;
+        final var ev_mask = Event.eventsToMask(events);
         if (pathWatchMap.containsKey(path)) {
             wm_mask |= WatchModifier.Add.value();
         }
@@ -234,8 +233,8 @@ public class Inotify extends ConcurrentReader {
             throw new NullPointerException("path may not be null");
         }
 
-        final int wm_mask = WatchModifier.watchModifiersToMask(watchModifiers);
-        final int ev_mask = Event.eventsToMask(events);
+        final var wm_mask = WatchModifier.watchModifiersToMask(watchModifiers);
+        final var ev_mask = Event.eventsToMask(events);
 
         return add_watch(path, wm_mask, ev_mask);
     }
@@ -272,7 +271,7 @@ public class Inotify extends ConcurrentReader {
      */
     private int add_watch(final String path, final int wm_mask, final int ev_mask)
             throws InotifyException {
-        final int wd = addWatch(path, wm_mask | ev_mask);
+        final var wd = addWatch(path, wm_mask | ev_mask);
         pathWatchMap.put(path, wd);
         watchPathMap.put(wd, path);
         return wd;
@@ -298,7 +297,7 @@ public class Inotify extends ConcurrentReader {
      * @return {@code true} if a watch was removed, {@code false} otherwise
      */
     private boolean remove_watch(final int wd) throws InvalidWatchDescriptorException {
-        final String path = watchPathMap.get(wd);
+        final var path = watchPathMap.get(wd);
         watchPathMap.remove(wd);
         pathWatchMap.remove(path);
         watchListenerMap.remove(wd);

@@ -30,9 +30,7 @@ public class UserWatchLimitException extends InotifyException {
      * not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public UserWatchLimitException() {
-        super();
-    }
+    public UserWatchLimitException() {}
 
     /**
      * Constructs a user watch limit exception with the specified detail message. The cause is not
@@ -41,7 +39,7 @@ public class UserWatchLimitException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public UserWatchLimitException(String message) {
+    public UserWatchLimitException(final String message) {
         super(message);
     }
 }

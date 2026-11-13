@@ -30,9 +30,7 @@ public class InsufficientKernelMemoryException extends InotifyException {
      * The cause is not initialized, and may be subsequently initialized by a call to {@link
      * #initCause(Throwable)}.
      */
-    public InsufficientKernelMemoryException() {
-        super();
-    }
+    public InsufficientKernelMemoryException() {}
 
     /**
      * Constructs a new insufficient kernel memory exception with the specified detail message. The
@@ -42,7 +40,7 @@ public class InsufficientKernelMemoryException extends InotifyException {
      * @param message the detail message. The detail message is saved for later retrieval by the
      *     {@link #getMessage()} method.
      */
-    public InsufficientKernelMemoryException(String message) {
+    public InsufficientKernelMemoryException(final String message) {
         super(message);
     }
 }

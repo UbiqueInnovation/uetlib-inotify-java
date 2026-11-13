@@ -106,9 +106,10 @@ public class Watcher extends ConcurrentReader {
      *     provided to the thrown object.
      * @see ch.uetlib.inotify.enums.Event
      */
-    public Watcher(String path, Event ev) throws InotifyException {
-        super();
-        if (path == null || "".equals(path)) throw new IllegalArgumentException("invalid path");
+    public Watcher(final String path, final Event ev) throws InotifyException {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("invalid path");
+        }
         mode = Mode.LISTENER;
         init(path, ev);
     }
@@ -124,9 +125,11 @@ public class Watcher extends ConcurrentReader {
      *     provided to the thrown object.
      * @see ch.uetlib.inotify.enums.Event
      */
-    public Watcher(String path, Event ev, InotifyEventListener l) throws InotifyException {
-        super();
-        if (path == null || "".equals(path)) throw new IllegalArgumentException("invalid path");
+    public Watcher(final String path, final Event ev, final InotifyEventListener l)
+            throws InotifyException {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("invalid path");
+        }
         mode = Mode.LISTENER;
         addListener(l);
         init(path, ev);
@@ -142,10 +145,13 @@ public class Watcher extends ConcurrentReader {
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
      */
-    public Watcher(String path, Event ev, Runnable r) throws InotifyException {
-        super();
-        if (path == null || "".equals(path)) throw new IllegalArgumentException("invalid path");
-        if (r == null) throw new IllegalArgumentException("invalid runnable");
+    public Watcher(final String path, final Event ev, final Runnable r) throws InotifyException {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("invalid path");
+        }
+        if (r == null) {
+            throw new IllegalArgumentException("invalid runnable");
+        }
         mode = Mode.RUNNABLE;
         barrier = new CyclicBarrier(1, r);
         init(path, ev);
@@ -163,10 +169,14 @@ public class Watcher extends ConcurrentReader {
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
      */
-    public Watcher(String path, Event ev, CyclicBarrier b) throws InotifyException {
-        super();
-        if (path == null || "".equals(path)) throw new IllegalArgumentException("invalid path");
-        if (b == null) throw new IllegalArgumentException("invalid barrier");
+    public Watcher(final String path, final Event ev, final CyclicBarrier b)
+            throws InotifyException {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("invalid path");
+        }
+        if (b == null) {
+            throw new IllegalArgumentException("invalid barrier");
+        }
         mode = Mode.BARRIER;
         barrier = b;
         init(path, ev);
@@ -183,10 +193,14 @@ public class Watcher extends ConcurrentReader {
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
      */
-    public Watcher(String path, Event ev, CountDownLatch c) throws InotifyException {
-        super();
-        if (path == null || "".equals(path)) throw new IllegalArgumentException("invalid path");
-        if (c == null) throw new IllegalArgumentException("invalid latch");
+    public Watcher(final String path, final Event ev, final CountDownLatch c)
+            throws InotifyException {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("invalid path");
+        }
+        if (c == null) {
+            throw new IllegalArgumentException("invalid latch");
+        }
         mode = Mode.LATCH;
         latch = c;
         init(path, ev);
@@ -203,16 +217,19 @@ public class Watcher extends ConcurrentReader {
      * @throws InotifyException Thrown when the watcher could not be created; a cause will be
      *     provided to the thrown object.
      */
-    public Watcher(String path, Event ev, Semaphore s) throws InotifyException {
-        super();
-        if (path == null || "".equals(path)) throw new IllegalArgumentException("invalid path");
-        if (s == null) throw new IllegalArgumentException("invalid semaphore");
+    public Watcher(final String path, final Event ev, final Semaphore s) throws InotifyException {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("invalid path");
+        }
+        if (s == null) {
+            throw new IllegalArgumentException("invalid semaphore");
+        }
         mode = Mode.SEMAPHORE;
         semaphore = s;
         init(path, ev);
     }
 
-    private void init(String path, Event ev) throws InotifyException {
+    private void init(final String path, final Event ev) throws InotifyException {
         this.pathName = path;
         this.eventType = ev;
         addWatch(pathName, ev.value());
@@ -228,9 +245,11 @@ public class Watcher extends ConcurrentReader {
      * @param l InotifyEventListener - null listeners are ignored
      */
     @NonThreadSafe
-    public void addListener(InotifyEventListener l) {
+    public void addListener(final InotifyEventListener l) {
         if (l != null) {
-            if (listeners == null) listeners = new LinkedList<InotifyEventListener>();
+            if (listeners == null) {
+                listeners = new LinkedList<>();
+            }
             listeners.add(l);
         }
     }
@@ -242,9 +261,11 @@ public class Watcher extends ConcurrentReader {
      * @param l InotifyEventListener - null listeners are ignored
      * @see java.util.List#remove(Object)
      */
-    public void removeListener(InotifyEventListener l) {
+    public void removeListener(final InotifyEventListener l) {
         if (l != null) {
-            if (listeners != null) listeners.remove(l);
+            if (listeners != null) {
+                listeners.remove(l);
+            }
         }
     }
 
@@ -253,7 +274,9 @@ public class Watcher extends ConcurrentReader {
      * listeners.
      */
     public void removeAll() {
-        if (listeners != null) listeners.clear();
+        if (listeners != null) {
+            listeners.clear();
+        }
     }
 
     /**
@@ -280,16 +303,18 @@ public class Watcher extends ConcurrentReader {
      * @param e InotifyEvent
      */
     @Override
-    void eventHandler(InotifyEvent e) {
+    void eventHandler(final InotifyEvent e) {
         if (e.getName() != null) {
-            if (pathName.charAt(pathName.length() - 1) == '/')
+            if (pathName.charAt(pathName.length() - 1) == '/') {
                 e.setContextualName(pathName + e.getName());
-            else e.setContextualName(pathName + '/' + e.getName());
+            } else {
+                e.setContextualName(pathName + '/' + e.getName());
+            }
         }
 
         switch (mode) {
             case LISTENER:
-                for (InotifyEventListener l : listeners) {
+                for (final var l : listeners) {
                     l.filesystemEventOccurred(e);
                 }
                 return;
@@ -297,16 +322,14 @@ public class Watcher extends ConcurrentReader {
             case BARRIER:
                 try {
                     barrier.await();
-                } catch (InterruptedException ie) {
+                } catch (final InterruptedException ie) {
                     destroy();
-                    UnsupportedOperationException uoe =
-                            new UnsupportedOperationException("watcher destroyed");
+                    final var uoe = new UnsupportedOperationException("watcher destroyed");
                     uoe.initCause(ie);
                     throw uoe;
-                } catch (BrokenBarrierException bbe) {
+                } catch (final BrokenBarrierException bbe) {
                     destroy();
-                    UnsupportedOperationException uoe =
-                            new UnsupportedOperationException("watcher destroyed");
+                    final var uoe = new UnsupportedOperationException("watcher destroyed");
                     uoe.initCause(bbe);
                     throw uoe;
                 }
@@ -320,7 +343,7 @@ public class Watcher extends ConcurrentReader {
         }
 
         if (mode != Mode.LISTENER && listeners != null) {
-            for (InotifyEventListener l : listeners) {
+            for (final var l : listeners) {
                 l.filesystemEventOccurred(e);
             }
         }
@@ -333,7 +356,7 @@ public class Watcher extends ConcurrentReader {
      */
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
+        final var s = new StringBuilder();
         s.append(getClass().getSimpleName());
 
         s.append(" [mode=");
@@ -380,7 +403,9 @@ public class Watcher extends ConcurrentReader {
      * @return Number of listeners
      */
     int numberOfListeners() {
-        if (listeners != null) return listeners.size();
+        if (listeners != null) {
+            return listeners.size();
+        }
         return 0;
     }
 }

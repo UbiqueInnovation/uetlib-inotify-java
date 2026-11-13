@@ -23,15 +23,8 @@ import ch.uetlib.inotify.exceptions.SystemLimitException;
 import ch.uetlib.inotify.exceptions.UserInstanceLimitException;
 import ch.uetlib.inotify.exceptions.UserWatchLimitException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -42,7 +35,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since Version 2
  * @author Nick Bargnesi
  */
-public abstract class NativeInotify {
+public abstract class NativeInotify implements AutoCloseable {
 
     /** Watch descriptor associated with this inotify instance. */
     protected int fileDescriptor;
@@ -125,11 +118,7 @@ public abstract class NativeInotify {
         lock.lock();
         try {
             if (filename == null) {
-                if (System.getProperty("os.arch").contains("64")) {
-                    filename = "libinotify-java-noglobal";
-                } else {
-                    filename = "libinotify-java-noglobal";
-                }
+                filename = "libinotify-java-noglobal";
                 try {
                     loadFromJar(filename); // $NON-NLS-1$
                 } catch (final Exception e) {
@@ -144,31 +133,30 @@ public abstract class NativeInotify {
         }
     }
 
-    /** When packaged into JAR extracts DLLs, places these into */
+    /**
+     * Extracts the bundled library into a new private temporary directory and loads it. The
+     * directory is owner-only and randomly named, and is removed once the library is loaded.
+     */
     private static void loadFromJar(final String fileName) throws Exception {
-        // we need to put both DLLs to temp dir
-        final String path = "inotify_" + new Date().getTime();
-        loadLib(path, fileName);
-    }
-
-    /** Puts library to temp dir and loads to memory */
-    private static void loadLib(final String path, String name) throws Exception {
-        name = name + ".so";
-        // have to use a stream
-        final InputStream in = NativeInotify.class.getResourceAsStream(LIB + name);
-        // always write to different location
-        final File fileOut =
-                new File(System.getProperty("java.io.tmpdir") + "/" + path + LIB + name);
-        final OutputStream out = FileUtils.openOutputStream(fileOut);
-        IOUtils.copy(in, out);
-        in.close();
-        out.close();
-        System.load(fileOut.toString());
+        final var name = fileName + ".so";
+        final var dir = Files.createTempDirectory("inotify_");
+        final var library = dir.resolve(name);
+        try (final var in = NativeInotify.class.getResourceAsStream(LIB + name)) {
+            if (in == null) {
+                throw new FileNotFoundException("Bundled library " + LIB + name + " not found");
+            }
+            Files.copy(in, library);
+            System.load(library.toString());
+        } finally {
+            // A loaded library stays mapped after its file is deleted.
+            Files.deleteIfExists(library);
+            Files.delete(dir);
+        }
     }
 
     /** Invokes {@link #destroy()}. */
     @Override
-    protected void finalize() throws Throwable {
+    public void close() {
         destroy();
     }
 
@@ -187,7 +175,7 @@ public abstract class NativeInotify {
     @ThreadSafe
     public final boolean isActive() {
         activeSem.acquireUninterruptibly();
-        final boolean active = fdActive;
+        final var active = fdActive;
         activeSem.release();
         return active;
     }
@@ -207,7 +195,7 @@ public abstract class NativeInotify {
     @ThreadSafe
     public final boolean isInactive() {
         activeSem.acquireUninterruptibly();
-        final boolean inactive = !fdActive;
+        final var inactive = !fdActive;
         activeSem.release();
         return inactive;
     }
@@ -237,17 +225,6 @@ public abstract class NativeInotify {
             }
         } finally {
             activeSem.release();
-        }
-        // remove tmp files
-        final File dir = new File("/tmp/");
-        final FileFilter filter = WildcardFileFilter.builder().setWildcards("inotify_*").get();
-        final File[] dirs = dir.listFiles(filter);
-        for (final File tmpDir : dirs) {
-            try {
-                FileUtils.deleteDirectory(tmpDir);
-            } catch (final Exception e) {
-                // dont do anything, its just the tmp folder
-            }
         }
     }
 
