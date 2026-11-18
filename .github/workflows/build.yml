@@ -1,14 +1,14 @@
 name: Build
 on:
   push:
-    branches: ['**']
+    branches: [main]
   pull_request:
 permissions:
   contents: read
 jobs:
   build:
     name: Build Project
-    uses: UbiqueInnovation/uetlib/.github/workflows/mvn-install.yml@19fddae4da96e4a98412c1eb5936cae34d2c1ff8 # uetlib#28, repin to v1.1.1 before merge
+    uses: UbiqueInnovation/uetlib/.github/workflows/mvn-install.yml@b2274a24393298710015211301cf003af6742147 # v1.1.1
 
     secrets: inherit
   verify-linux:
