@@ -8,7 +8,7 @@ permissions:
 jobs:
   build:
     name: Build Project
-    uses: UbiqueInnovation/uetlib/.github/workflows/mvn-install.yml@e5ebd36aff4fb418fbae7222346c2f6782a1c865 # uetlib#28, repin to v1.1.1 before merge
+    uses: UbiqueInnovation/uetlib/.github/workflows/mvn-install.yml@19fddae4da96e4a98412c1eb5936cae34d2c1ff8 # uetlib#28, repin to v1.1.1 before merge
 
     secrets: inherit
   verify-linux:
@@ -25,9 +25,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          # Pull request builds resolve without Artifactory and must not reuse its Maven cache.
+          # Pull request builds resolve without Artifactory and use their own Maven cache below.
           cache: ${{ github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && 'maven' || '' }}
           overwrite-settings: false
+
+      - name: Cache Maven repository for pull requests
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.m2/repository
+          key: maven-pr-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-pr-${{ runner.os }}-
 
       - name: Create settings.xml
         if: ${{ github.event_name != 'pull_request' && github.event_name != 'pull_request_target' }}
