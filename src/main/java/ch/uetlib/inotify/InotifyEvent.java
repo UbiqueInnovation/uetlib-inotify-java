@@ -19,6 +19,8 @@ package ch.uetlib.inotify;
 import ch.uetlib.inotify.enums.Event;
 import ch.uetlib.inotify.enums.EventModifier;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.EventObject;
 
 /**
@@ -36,13 +38,13 @@ public class InotifyEvent extends EventObject {
     private int cookie;
 
     /** Contains a name value dependent on type of mask. */
-    private String name;
+    private @Nullable String name;
 
     /**
      * Contains a contextual name optionally provided by the {@link ch.uetlib.inotify.NativeInotify
      * NativeInotify} derived type.
      */
-    private String contextualName;
+    private @Nullable String contextualName;
 
     /**
      * Creates a new InotifyEvent from the specific watch descriptor, mask, cookie, and name value.
@@ -80,7 +82,10 @@ public class InotifyEvent extends EventObject {
      * @param name Name value specific to this mask
      */
     public InotifyEvent(
-            final int watchDescriptor, final int mask, final int cookie, final String name) {
+            final int watchDescriptor,
+            final int mask,
+            final int cookie,
+            final @Nullable String name) {
         super(watchDescriptor);
         this.mask = mask;
         this.cookie = cookie;
@@ -123,7 +128,7 @@ public class InotifyEvent extends EventObject {
      *
      * @return String
      */
-    public final String getName() {
+    public final @Nullable String getName() {
         return name;
     }
 
@@ -132,7 +137,7 @@ public class InotifyEvent extends EventObject {
      *
      * @return String
      */
-    public final String getContextualName() {
+    public final @Nullable String getContextualName() {
         return contextualName;
     }
 

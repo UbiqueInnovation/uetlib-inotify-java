@@ -17,6 +17,8 @@
  */
 package ch.uetlib.inotify.enums;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +82,7 @@ public enum WatchModifier {
      * @param s Coversion value
      * @return Watch modifier
      */
-    public WatchModifier fromString(final String s) {
+    public @Nullable WatchModifier fromString(final String s) {
         return STRINGTOENUM.get(s);
     }
 

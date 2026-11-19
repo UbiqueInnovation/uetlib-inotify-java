@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.0
+
+- Compile with the shared Error Prone and NullAway checks from `uetlib-parent` instead of disabling annotation
+  processing. All packages are `@NullMarked`; methods, fields and parameters that can be `null` are `@Nullable`.
+- Fix a `NullPointerException` on the first event of a `Watcher` created without a listener.
+- Add `MonitorService.getLastArrivalInstant()`. Deprecate `getLastArrivalDate()` and
+  `getLastArrivalDate(Locale)` for removal; they return `java.util.Date`.
+
 ## 3.0.4
 
 - Use shared Maven workflows at `v1.1.1`.

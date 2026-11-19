@@ -25,8 +25,11 @@ import ch.uetlib.inotify.enums.WatchModifier;
 import ch.uetlib.inotify.exceptions.InotifyException;
 import ch.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
 
+import org.jspecify.annotations.Nullable;
+
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -71,13 +74,13 @@ public final class MonitorService extends NativeInotify {
     public static final int DEFAULT_MAX_QUEUED_EVENTS = 16384;
 
     /** Map of watch descriptors to paths. */
-    Map<Integer, String> watchPathMap;
+    final Map<Integer, String> watchPathMap = new ConcurrentHashMap<>();
 
     /** Map of paths to watch descriptors. */
-    Map<String, Integer> pathWatchMap;
+    final Map<String, Integer> pathWatchMap = new ConcurrentHashMap<>();
 
     /** Map of watch descriptors to event listeners. */
-    Map<Integer, Set<InotifyEventListener>> watchListenerMap;
+    final Map<Integer, Set<InotifyEventListener>> watchListenerMap = new ConcurrentHashMap<>();
 
     /** The queue used for direct handoff by the servicing thread. */
     LinkedBlockingQueue<InotifyEvent> queue;
@@ -209,17 +212,9 @@ public final class MonitorService extends NativeInotify {
         serviceInit();
     }
 
-    /** Shared init routines. */
+    /** Creates the backing queue. */
     private void sharedInit() {
-        initQueue();
-        mapInit();
-    }
-
-    /*
-     * Creates the backing queue.
-     */
-    private void initQueue() {
-        queue = new LinkedBlockingQueue<InotifyEvent>(queueCapacity);
+        queue = new LinkedBlockingQueue<>(queueCapacity);
     }
 
     /*
@@ -246,15 +241,6 @@ public final class MonitorService extends NativeInotify {
     private void initHandler(final UncaughtExceptionHandler h) {
         consumer.setUncaughtExceptionHandler(h);
         producer.setUncaughtExceptionHandler(h);
-    }
-
-    /*
-     * Establish maps.
-     */
-    private void mapInit() {
-        watchPathMap = new ConcurrentHashMap<Integer, String>();
-        pathWatchMap = new ConcurrentHashMap<String, Integer>();
-        watchListenerMap = new ConcurrentHashMap<Integer, Set<InotifyEventListener>>();
     }
 
     /*
@@ -321,13 +307,25 @@ public final class MonitorService extends NativeInotify {
     }
 
     /**
+     * Returns the last arrival time, or {@code null} if no events have been received.
+     *
+     * @return Instant of the last arrival time, or {@code null} if no events have been received
+     */
+    public @Nullable Instant getLastArrivalInstant() {
+        return lastArrivalTime == 0L ? null : Instant.ofEpochMilli(lastArrivalTime);
+    }
+
+    /**
      * Returns the last arrival time as a {@link java.util.Date date}, which may be null.
      *
      * @param locale Locale to convert to
      * @return Date of last arrival time or null if no events have been received
      * @throws ParseException Thrown if errors occur processing the arrival time
+     * @deprecated Use {@link #getLastArrivalInstant()}.
      */
-    public Date getLastArrivalDate(final Locale locale) throws ParseException {
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings("JavaUtilDate")
+    public @Nullable Date getLastArrivalDate(final Locale locale) throws ParseException {
         if (locale == null) {
             throw new NullPointerException("locale may not be null");
         }
@@ -345,8 +343,11 @@ public final class MonitorService extends NativeInotify {
      *
      * @return Date of last arrival time or null if no events have been received
      * @throws ParseException Thrown if the errors occur processing the arrival time
+     * @deprecated Use {@link #getLastArrivalInstant()}.
      */
-    public Date getLastArrivalDate() throws ParseException {
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings("JavaUtilDate")
+    public @Nullable Date getLastArrivalDate() throws ParseException {
         if (lastArrivalTime == 0L) {
             return null;
         }
@@ -440,7 +441,7 @@ public final class MonitorService extends NativeInotify {
      * @return Path associated with provided watch descriptor, or null if the watch descriptor is
      *     not valid
      */
-    public String getPath(final int watchDescriptor) {
+    public @Nullable String getPath(final int watchDescriptor) {
         return watchPathMap.get(watchDescriptor);
     }
 

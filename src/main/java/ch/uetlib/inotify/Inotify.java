@@ -21,6 +21,8 @@ import ch.uetlib.inotify.enums.WatchModifier;
 import ch.uetlib.inotify.exceptions.InotifyException;
 import ch.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -117,7 +119,7 @@ public class Inotify extends ConcurrentReader {
      * @return Path associated with provided watch descriptor, or null if the watch descriptor is
      *     not valid
      */
-    public String getPath(final int watchDescriptor) {
+    public @Nullable String getPath(final int watchDescriptor) {
         return watchPathMap.get(watchDescriptor);
     }
 
