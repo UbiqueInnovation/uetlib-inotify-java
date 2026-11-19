@@ -307,7 +307,7 @@ public final class MonitorService extends NativeInotify {
      *
      * @return Instant of the last arrival time, or {@code null} if no events have been received
      */
-    public @Nullable Instant getLastArrivalInstant() {
+    public @Nullable Instant getLastArrivalDate() {
         return lastArrivalTime == 0L ? null : Instant.ofEpochMilli(lastArrivalTime);
     }
 

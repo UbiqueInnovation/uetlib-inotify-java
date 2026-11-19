@@ -59,7 +59,7 @@ class global reference; check GetEnv and pending exceptions after Java pipe/FD
 calls. Guard Java watch bookkeeping when a queued ignored event arrives after
 explicit watch removal. Compile with the shared Error Prone and NullAway checks: JSpecify nullness
 annotations, a `Watcher` without listeners no longer fails on its first event, and
-`MonitorService.getLastArrivalInstant()` replaces the `java.util.Date` accessors. These are
+`MonitorService.getLastArrivalDate()` returns an `Instant` instead of a `java.util.Date`. These are
 intentional corrections, not claims about the historical source.
 
 ## Runtime baseline

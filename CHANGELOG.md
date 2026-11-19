@@ -8,8 +8,8 @@
 
 ### Breaking changes
 
-- Replace `MonitorService.getLastArrivalDate()` and `getLastArrivalDate(Locale)`, which returned `java.util.Date`,
-  with `getLastArrivalInstant()`, which returns an `Instant` or `null` if no events have been received.
+- `MonitorService.getLastArrivalDate()` returns an `Instant` instead of a `java.util.Date`, or `null` if no
+  events have been received. `getLastArrivalDate(Locale)` is removed.
 
 ## 3.0.4
 
