@@ -28,11 +28,7 @@ import ch.uetlib.inotify.exceptions.InvalidWatchDescriptorException;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.text.ParseException;
 import java.time.Instant;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -313,45 +309,6 @@ public final class MonitorService extends NativeInotify {
      */
     public @Nullable Instant getLastArrivalInstant() {
         return lastArrivalTime == 0L ? null : Instant.ofEpochMilli(lastArrivalTime);
-    }
-
-    /**
-     * Returns the last arrival time as a {@link java.util.Date date}, which may be null.
-     *
-     * @param locale Locale to convert to
-     * @return Date of last arrival time or null if no events have been received
-     * @throws ParseException Thrown if errors occur processing the arrival time
-     * @deprecated Use {@link #getLastArrivalInstant()}.
-     */
-    @Deprecated(forRemoval = true)
-    @SuppressWarnings("JavaUtilDate")
-    public @Nullable Date getLastArrivalDate(final Locale locale) throws ParseException {
-        if (locale == null) {
-            throw new NullPointerException("locale may not be null");
-        }
-        if (lastArrivalTime == 0L) {
-            return null;
-        }
-        final var ret = Calendar.getInstance(locale);
-        ret.setTimeInMillis(lastArrivalTime);
-        return ret.getTime();
-    }
-
-    /**
-     * Returns the last arrival time as a {@link java.util.Date date} in the {@code US} locale,
-     * which may be null.
-     *
-     * @return Date of last arrival time or null if no events have been received
-     * @throws ParseException Thrown if the errors occur processing the arrival time
-     * @deprecated Use {@link #getLastArrivalInstant()}.
-     */
-    @Deprecated(forRemoval = true)
-    @SuppressWarnings("JavaUtilDate")
-    public @Nullable Date getLastArrivalDate() throws ParseException {
-        if (lastArrivalTime == 0L) {
-            return null;
-        }
-        return getLastArrivalDate(Locale.US);
     }
 
     /**

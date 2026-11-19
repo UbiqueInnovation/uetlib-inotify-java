@@ -1,12 +1,15 @@
 # Changelog
 
-## 3.1.0
+## 4.0.0
 
 - Compile with the shared Error Prone and NullAway checks from `uetlib-parent` instead of disabling annotation
   processing. All packages are `@NullMarked`; methods, fields and parameters that can be `null` are `@Nullable`.
 - Fix a `NullPointerException` on the first event of a `Watcher` created without a listener.
-- Add `MonitorService.getLastArrivalInstant()`. Deprecate `getLastArrivalDate()` and
-  `getLastArrivalDate(Locale)` for removal; they return `java.util.Date`.
+
+### Breaking changes
+
+- Replace `MonitorService.getLastArrivalDate()` and `getLastArrivalDate(Locale)`, which returned `java.util.Date`,
+  with `getLastArrivalInstant()`, which returns an `Instant` or `null` if no events have been received.
 
 ## 3.0.4
 
