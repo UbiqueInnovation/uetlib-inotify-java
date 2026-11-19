@@ -23,7 +23,7 @@ import ch.uetlib.inotify.exceptions.InotifyException;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
@@ -252,7 +252,7 @@ public class Watcher extends ConcurrentReader {
     public void addListener(final InotifyEventListener l) {
         if (l != null) {
             if (listeners == null) {
-                listeners = new LinkedList<>();
+                listeners = new ArrayList<>();
             }
             listeners.add(l);
         }
@@ -317,7 +317,7 @@ public class Watcher extends ConcurrentReader {
         }
 
         switch (mode) {
-            case LISTENER:
+            case LISTENER -> {
                 // A watcher constructed without a listener has none until addListener is called.
                 final var current = listeners;
                 if (current != null) {
@@ -326,8 +326,8 @@ public class Watcher extends ConcurrentReader {
                     }
                 }
                 return;
-            case RUNNABLE:
-            case BARRIER:
+            }
+            case RUNNABLE, BARRIER -> {
                 try {
                     requireNonNull(barrier, "barrier").await();
                 } catch (final InterruptedException ie) {
@@ -341,13 +341,9 @@ public class Watcher extends ConcurrentReader {
                     uoe.initCause(bbe);
                     throw uoe;
                 }
-                break;
-            case LATCH:
-                requireNonNull(latch, "latch").countDown();
-                break;
-            case SEMAPHORE:
-                requireNonNull(semaphore, "semaphore").release();
-                break;
+            }
+            case LATCH -> requireNonNull(latch, "latch").countDown();
+            case SEMAPHORE -> requireNonNull(semaphore, "semaphore").release();
         }
 
         final var current = listeners;
@@ -370,21 +366,11 @@ public class Watcher extends ConcurrentReader {
 
         s.append(" [mode=");
         switch (mode) {
-            case BARRIER:
-                s.append(Mode.BARRIER);
-                break;
-            case LATCH:
-                s.append(Mode.LATCH);
-                break;
-            case LISTENER:
-                s.append(Mode.LISTENER);
-                break;
-            case RUNNABLE:
-                s.append(Mode.RUNNABLE);
-                break;
-            case SEMAPHORE:
-                s.append(Mode.SEMAPHORE);
-                break;
+            case BARRIER -> s.append(Mode.BARRIER);
+            case LATCH -> s.append(Mode.LATCH);
+            case LISTENER -> s.append(Mode.LISTENER);
+            case RUNNABLE -> s.append(Mode.RUNNABLE);
+            case SEMAPHORE -> s.append(Mode.SEMAPHORE);
         }
 
         s.append(", fd=");

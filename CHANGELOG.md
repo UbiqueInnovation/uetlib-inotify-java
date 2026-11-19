@@ -1,5 +1,10 @@
 # Changelog
 
+## UNRELEASED
+
+- Fix the warnings of Error Prone's default checks: redundant parentheses, `LinkedList`, switch statements and
+  a Javadoc tag.
+
 ## 3.0.5
 
 - Compile with the shared Error Prone and NullAway checks from `uetlib-parent` instead of disabling annotation
