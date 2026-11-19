@@ -16,8 +16,12 @@
  */
 package ch.uetlib.inotify;
 
+import static java.util.Objects.requireNonNull;
+
 import ch.uetlib.inotify.enums.Event;
 import ch.uetlib.inotify.exceptions.InotifyException;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,16 +69,16 @@ public class Watcher extends ConcurrentReader {
     private Event eventType;
 
     /** Barrier when operating in barrier mode. */
-    protected CyclicBarrier barrier;
+    protected @Nullable CyclicBarrier barrier;
 
     /** Latch when operating in latch mode. */
-    protected CountDownLatch latch;
+    protected @Nullable CountDownLatch latch;
 
     /** Semaphore when operating in semaphore mode. */
-    protected Semaphore semaphore;
+    protected @Nullable Semaphore semaphore;
 
     /** List of listeners to notify of filesystem events. */
-    protected List<InotifyEventListener> listeners;
+    protected @Nullable List<InotifyEventListener> listeners;
 
     /** Enumeration definition defining mode definitions. */
     protected static enum Mode {
@@ -314,14 +318,18 @@ public class Watcher extends ConcurrentReader {
 
         switch (mode) {
             case LISTENER:
-                for (final var l : listeners) {
-                    l.filesystemEventOccurred(e);
+                // A watcher constructed without a listener has none until addListener is called.
+                final var current = listeners;
+                if (current != null) {
+                    for (final var l : current) {
+                        l.filesystemEventOccurred(e);
+                    }
                 }
                 return;
             case RUNNABLE:
             case BARRIER:
                 try {
-                    barrier.await();
+                    requireNonNull(barrier, "barrier").await();
                 } catch (final InterruptedException ie) {
                     destroy();
                     final var uoe = new UnsupportedOperationException("watcher destroyed");
@@ -335,15 +343,16 @@ public class Watcher extends ConcurrentReader {
                 }
                 break;
             case LATCH:
-                latch.countDown();
+                requireNonNull(latch, "latch").countDown();
                 break;
             case SEMAPHORE:
-                semaphore.release();
+                requireNonNull(semaphore, "semaphore").release();
                 break;
         }
 
-        if (mode != Mode.LISTENER && listeners != null) {
-            for (final var l : listeners) {
+        final var current = listeners;
+        if (mode != Mode.LISTENER && current != null) {
+            for (final var l : current) {
                 l.filesystemEventOccurred(e);
             }
         }

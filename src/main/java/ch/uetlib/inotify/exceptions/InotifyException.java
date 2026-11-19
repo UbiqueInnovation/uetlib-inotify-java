@@ -17,6 +17,8 @@
  */
 package ch.uetlib.inotify.exceptions;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Base class of all checked exceptions within <b>inotify-java</b>.
  *
@@ -37,7 +39,7 @@ public class InotifyException extends Exception {
      * @param message the detail message, saved for later retrieval by the {@link #getMessage()}
      *     method
      */
-    public InotifyException(final String message) {
+    public InotifyException(final @Nullable String message) {
         super(message);
     }
 
@@ -50,7 +52,7 @@ public class InotifyException extends Exception {
      * @param cause the {@link java.lang.Throwable throwable} indicating the cause of the exception
      *     ({@code null} values are permitted
      */
-    public InotifyException(final String message, final Throwable cause) {
+    public InotifyException(final @Nullable String message, final Throwable cause) {
         super(message, cause);
     }
 

@@ -57,7 +57,10 @@ Separate from the reconstruction: clear the freed event-buffer pointer to preven
 shutdown double-free; close the epoll descriptor; release the omitted watch-limit
 class global reference; check GetEnv and pending exceptions after Java pipe/FD
 calls. Guard Java watch bookkeeping when a queued ignored event arrives after
-explicit watch removal. These are intentional corrections, not claims about the historical source.
+explicit watch removal. Compile with the shared Error Prone and NullAway checks: JSpecify nullness
+annotations, a `Watcher` without listeners no longer fails on its first event, and
+`MonitorService.getLastArrivalDate()` returns an `Instant` instead of a `java.util.Date`. These are
+intentional corrections, not claims about the historical source.
 
 ## Runtime baseline
 

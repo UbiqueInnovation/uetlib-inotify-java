@@ -23,6 +23,8 @@ import ch.uetlib.inotify.exceptions.SystemLimitException;
 import ch.uetlib.inotify.exceptions.UserInstanceLimitException;
 import ch.uetlib.inotify.exceptions.UserWatchLimitException;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.util.concurrent.Semaphore;
@@ -56,7 +58,7 @@ public abstract class NativeInotify implements AutoCloseable {
     private static final String INOTIFY_64 = "libinotify-java-64.so";
 
     /** Contains the file descriptors for the read/write ends of a pipe, used for IPC purposes. */
-    private int[] pipes;
+    private final int[] pipes = new int[2];
 
     /**
      * Constructs a new Inotify instance.
@@ -114,7 +116,7 @@ public abstract class NativeInotify implements AutoCloseable {
      * @see java.lang.SecurityManager#checkLink(String)
      */
     @ThreadSafe
-    public static void loadLibrary(String filename) throws InotifyException {
+    public static void loadLibrary(@Nullable String filename) throws InotifyException {
         lock.lock();
         try {
             if (filename == null) {
@@ -351,7 +353,6 @@ public abstract class NativeInotify implements AutoCloseable {
      * @param writeEnd File descriptor of pipe write end
      */
     public void setPipes(final int readEnd, final int writeEnd) {
-        pipes = new int[2];
         pipes[0] = readEnd;
         pipes[1] = writeEnd;
     }

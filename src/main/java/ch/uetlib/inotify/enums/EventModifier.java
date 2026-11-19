@@ -17,6 +17,8 @@
  */
 package ch.uetlib.inotify.enums;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +80,7 @@ public enum EventModifier {
      * @param s Conversion value
      * @return event modifier
      */
-    public EventModifier fromString(final String s) {
+    public @Nullable EventModifier fromString(final String s) {
         return STRINGTOENUM.get(s);
     }
 
