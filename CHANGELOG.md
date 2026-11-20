@@ -6,6 +6,8 @@
   `2026.11.5`: [Changelog/2026.11.5](https://github.com/UbiqueInnovation/uetlib-parent/blob/main/CHANGELOG.md#2026115) [Diff/2026.11.2-2026.11.5](https://github.com/UbiqueInnovation/uetlib-parent/compare/v2026.11.2...v2026.11.5)
 - Updated dependencies and actions.
 
+- Pull requests from this repository run the Linux verification through Artifactory, so they can use releases
+  that are not on Central yet.
 - Fix the warnings of Error Prone's default checks: redundant parentheses, `LinkedList`, switch statements and
   a Javadoc tag.
 
