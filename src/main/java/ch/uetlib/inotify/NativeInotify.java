@@ -112,7 +112,7 @@ public abstract class NativeInotify implements AutoCloseable {
      * @param filename The file to load
      * @throws SecurityException Thrown if a security manager is preventing loading of the dyanmic
      *     library
-     * @exception UnsatisfiedLinkError Thrown if the library does not exist
+     * @throws UnsatisfiedLinkError Thrown if the library does not exist
      * @see java.lang.SecurityManager#checkLink(String)
      */
     @ThreadSafe

@@ -158,7 +158,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isAccess() {
-        return (Event.isSet(Event.Access, mask));
+        return Event.isSet(Event.Access, mask);
     }
 
     /**
@@ -168,7 +168,7 @@ public class InotifyEvent extends EventObject {
      *     false} otherwise
      */
     public boolean isCloseNoWrite() {
-        return (Event.isSet(Event.Close_No_Write, mask));
+        return Event.isSet(Event.Close_No_Write, mask);
     }
 
     /**
@@ -178,7 +178,7 @@ public class InotifyEvent extends EventObject {
      *     false} otherwise
      */
     public boolean isCloseWrite() {
-        return (Event.isSet(Event.Close_Write, mask));
+        return Event.isSet(Event.Close_Write, mask);
     }
 
     /**
@@ -188,7 +188,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isClose() {
-        return (Event.isSet(Event.Close, mask));
+        return Event.isSet(Event.Close, mask);
     }
 
     /**
@@ -198,7 +198,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isCreate() {
-        return (Event.isSet(Event.Create, mask));
+        return Event.isSet(Event.Create, mask);
     }
 
     /**
@@ -208,7 +208,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isDelete() {
-        return (Event.isSet(Event.Delete, mask));
+        return Event.isSet(Event.Delete, mask);
     }
 
     /**
@@ -218,7 +218,7 @@ public class InotifyEvent extends EventObject {
      *     false} otherwise
      */
     public boolean isDeleteSelf() {
-        return (Event.isSet(Event.Delete_Self, mask));
+        return Event.isSet(Event.Delete_Self, mask);
     }
 
     /**
@@ -228,7 +228,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isMetadata() {
-        return (Event.isSet(Event.Metadata, mask));
+        return Event.isSet(Event.Metadata, mask);
     }
 
     /**
@@ -238,7 +238,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isModify() {
-        return (Event.isSet(Event.Modify, mask));
+        return Event.isSet(Event.Modify, mask);
     }
 
     /**
@@ -248,7 +248,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isMoveSelf() {
-        return (Event.isSet(Event.Move_Self, mask));
+        return Event.isSet(Event.Move_Self, mask);
     }
 
     /**
@@ -258,7 +258,7 @@ public class InotifyEvent extends EventObject {
      *     false} otherwise
      */
     public boolean isMovedFrom() {
-        return (Event.isSet(Event.Moved_From, mask));
+        return Event.isSet(Event.Moved_From, mask);
     }
 
     /**
@@ -268,7 +268,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isMovedTo() {
-        return (Event.isSet(Event.Moved_To, mask));
+        return Event.isSet(Event.Moved_To, mask);
     }
 
     /**
@@ -278,7 +278,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isMoved() {
-        return (Event.isSet(Event.Moved, mask));
+        return Event.isSet(Event.Moved, mask);
     }
 
     /**
@@ -288,7 +288,7 @@ public class InotifyEvent extends EventObject {
      *     otherwise
      */
     public boolean isOpen() {
-        return (Event.isSet(Event.Open, mask));
+        return Event.isSet(Event.Open, mask);
     }
 
     /**
